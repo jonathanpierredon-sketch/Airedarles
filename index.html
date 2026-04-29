@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L'Aire d'Arles — L'image et le goût</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="description" content="L'Aire d'Arles, espace culturel et restaurant au cœur d'Arles. Cuisine camarguaise, expositions, concerts et soirées. 25 rue Porte de Laure.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blanc:      #ffffff;
+  --creme:      #f8f5f0;
+  --creme2:     #f0ebe3;
+  --gris-clair: #e5dfd6;
+  --gris:       #9a9189;
+  --gris-f:     #4a4540;
+  --encre:      #1a1714;
+  --terre:      #b85c38;
+  --terre-p:    #d4846a;
+  --ocre:       #c9a96e;
+  --ocre-p:     #e8d5b0;
+  --nav-h: 64px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--blanc);color:var(--encre);font-family:'Lato',sans-serif;font-weight:400;line-height:1.75;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+
+/* ---- NAV ---- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  background:rgba(255,255,255,0.97);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--gris-clair);
+  display:flex;flex-direction:column;align-items:center;
+  padding:14px 0 0;
+  transition:all 0.4s;
+}
+nav.scrolled{
+  flex-direction:row;justify-content:space-between;
+  padding:0 48px;height:60px;
+  box-shadow:0 2px 20px rgba(0,0,0,0.06);
+}
+.nav-brand{display:flex;flex-direction:column;align-items:center;gap:2px;margin-bottom:10px}
+nav.scrolled .nav-brand{flex-direction:row;gap:10px;align-items:baseline;margin-bottom:0}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:400;color:var(--encre);letter-spacing:0.02em}
+nav.scrolled .nav-logo{font-size:1.1rem}
+.nav-tag{font-family:'Playfair Display',serif;font-style:italic;font-size:0.78rem;color:var(--gris);letter-spacing:0.05em}
+nav.scrolled .nav-tag{font-size:0.68rem}
+.nav-links{display:flex;list-style:none;margin-bottom:0}
+nav.scrolled .nav-links{margin-bottom:0}
+.nav-links a{
+  font-size:0.63rem;font-weight:400;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--gris-f);padding:8px 18px;display:block;position:relative;transition:color 0.25s;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:0;left:18px;right:18px;height:1px;
+  background:var(--terre);transform:scaleX(0);transition:transform 0.3s;
+}
+.nav-links a:hover{color:var(--encre)}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-exposer a{color:var(--terre) !important}
+.nav-burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.nav-burger span{display:block;width:22px;height:1px;background:var(--encre);transition:all 0.3s}
+
+/* ---- HERO ---- */
+#accueil{display:none}
+
+/* ---- HERO VIDEO ---- */
+#hero-section{
+  width:100%;
+  background:#000;
+}
+/* Desktop : plein écran 100vh */
+#heroVideo{
+  display:block;
+  width:100%;
+  height:100vh;
+  object-fit:cover;
+}
+/* Mobile portrait : vidéo entière visible (pas de crop) */
+@media(max-width:600px) and (orientation:portrait){
+  #hero-section{ height:auto }
+  #heroVideo{
+    height:auto;
+    max-height:100svh;
+    object-fit:contain;
+    background:#000;
+  }
+}
+/* Boutons contrôles */
+#heroControls{
+  position:absolute;
+  bottom:20px;
+  right:16px;
+  z-index:10;
+  display:flex;
+  gap:10px;
+}
+#heroControls button{
+  background:rgba(0,0,0,0.45);
+  border:1px solid rgba(255,255,255,0.3);
+  color:#fff;
+  font-size:1.1rem;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:background 0.2s;
+  padding:0;
+  line-height:1;
+}
+#heroControls button:hover{
+  background:rgba(0,0,0,0.7);
+}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hero-overlay{display:none}
+.hero-scroll-arrow{
+  position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
+  z-index:10;cursor:pointer;
+  animation:fadeIn 1s 1.5s both, bounce 2s 2.5s infinite;
+  opacity:0.85;
+  transition:opacity 0.3s;
+}
+.hero-scroll-arrow:hover{opacity:1}
+@keyframes bounce{
+  0%,100%{transform:translateX(-50%) translateY(0)}
+  50%{transform:translateX(-50%) translateY(8px)}
+}
+.hero-ph{
+  position:absolute;inset:0;background:var(--creme2);
+  background-size:cover;background-position:center;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
+.hero-ph:not([style*="background-image"])::before{
+  content:'ARLES';font-family:'Playfair Display',serif;
+  font-size:clamp(5rem,18vw,16rem);font-weight:400;
+  color:rgba(201,169,110,0.1);letter-spacing:0.15em;user-select:none;
+}
+.hero-content{position:relative;z-index:2;text-align:center;padding:0 24px}
+.hero-lieu{font-size:0.6rem;letter-spacing:0.35em;text-transform:uppercase;color:var(--gris-f);margin-bottom:18px;opacity:0;animation:fadeUp 0.8s 0.2s forwards}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(3rem,8vw,7rem);font-weight:400;line-height:1.05;color:var(--encre);margin-bottom:12px;opacity:0;animation:fadeUp 0.8s 0.4s forwards;text-shadow:0 2px 20px rgba(255,255,255,0.6)}
+.hero-title em{font-style:italic;color:var(--terre)}
+.hero-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(0.9rem,2vw,1.2rem);color:var(--gris-f);margin-bottom:40px;letter-spacing:0.06em;opacity:0;animation:fadeUp 0.8s 0.6s forwards}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp 0.8s 0.8s forwards}
+.hero-scroll{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:7px;opacity:0;animation:fadeIn 1s 1.4s forwards}
+.hero-scroll span{font-size:0.52rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gris)}
+.scroll-t{width:1px;height:36px;background:linear-gradient(to bottom,var(--gris),transparent);animation:pulse 2s infinite}
+
+/* ---- BTN ---- */
+.btn{font-family:'Lato',sans-serif;font-size:0.62rem;font-weight:400;letter-spacing:0.22em;text-transform:uppercase;padding:12px 28px;display:inline-block;transition:all 0.3s;cursor:pointer;border:1px solid}
+.btn-terre{background:var(--terre);border-color:var(--terre);color:#fff}
+.btn-terre:hover{background:transparent;color:var(--terre)}
+.btn-out{background:transparent;border-color:var(--gris-clair);color:var(--gris-f)}
+.btn-out:hover{border-color:var(--encre);color:var(--encre)}
+.btn-out-f{background:transparent;border-color:var(--encre);color:var(--encre)}
+.btn-out-f:hover{background:var(--encre);color:#fff}
+.btn-blanc{background:#fff;border-color:#fff;color:var(--encre)}
+.btn-blanc:hover{background:transparent;color:#fff}
+.btn-out-b{background:transparent;border-color:rgba(255,255,255,0.4);color:rgba(255,255,255,0.85)}
+.btn-out-b:hover{border-color:#fff;color:#fff}
+
+/* ---- SECTIONS BASE ---- */
+section{padding:96px 0}
+.container{max-width:1160px;margin:0 auto;padding:0 48px}
+.label{font-size:0.65rem;font-weight:400;letter-spacing:0.25em;text-transform:uppercase;color:var(--terre);margin-bottom:12px}
+.titre{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:400;line-height:1.15;color:var(--encre);margin-bottom:24px}
+.titre em{font-style:italic;color:var(--gris-f)}
+.corps{font-size:1rem;color:var(--encre);line-height:1.85;margin-bottom:16px}
+.trait{width:36px;height:1px;background:var(--ocre);margin-bottom:20px}
+
+/* Reveal */
+.rev{opacity:0;transform:translateY(20px);transition:opacity 0.8s ease,transform 0.8s ease}
+.rev.on{opacity:1;transform:none}
+.d1{transition-delay:0.12s}.d2{transition-delay:0.24s}.d3{transition-delay:0.36s}
+
+/* ---- L'AIRE ---- */
+#laire{background:var(--blanc)}
+.laire-g{display:grid;grid-template-columns:1fr;gap:0}
+.pills{display:flex;flex-wrap:wrap;gap:7px;margin:24px 0}
+.pill{font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;padding:6px 13px;border:1px solid var(--gris-clair);color:var(--gris-f);transition:all 0.3s}
+.pill:hover{border-color:var(--ocre);color:var(--encre)}
+.info-t{border-top:1px solid var(--gris-clair);margin-top:24px}
+.info-r{display:flex;gap:16px;padding:11px 0;border-bottom:1px solid var(--gris-clair);font-size:0.82rem}
+.ik{font-size:0.65rem;font-weight:400;letter-spacing:0.1em;text-transform:uppercase;color:var(--gris-f);min-width:96px;padding-top:2px}
+.iv{color:var(--encre);font-size:0.9rem}
+
+/* Photo */
+.photo-ph{width:100%;aspect-ratio:3/4;background:var(--creme2);border:1px solid var(--gris-clair);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--gris);position:relative}
+.photo-ph-ico{font-size:1.8rem;opacity:0.35}
+.photo-ph-txt{font-size:0.56rem;letter-spacing:0.2em;text-transform:uppercase;opacity:0.5}
+.photo-wrap{position:relative;overflow:hidden}
+.photo-wrap img{width:100%;height:100%;object-fit:cover;transition:transform 0.7s ease}
+.photo-wrap:hover img{transform:scale(1.04)}
+.sticker{position:absolute;bottom:-16px;right:-16px;background:var(--terre);color:#fff;width:90px;height:90px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;font-size:0.6rem;line-height:1.4;font-style:italic;font-family:'Playfair Display',serif}
+
+/* ---- RESTAURANT ---- */
+#restaurant{background:var(--creme);border-top:1px solid var(--gris-clair);border-bottom:1px solid var(--gris-clair)}
+.resto-g{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;margin-bottom:56px}
+.spec-lbl{font-size:0.56rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gris);margin-bottom:14px;margin-top:24px}
+.spec-i{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--gris-clair);font-size:0.95rem;color:var(--encre)}
+.spec-i::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--terre-p);flex-shrink:0}
+.menu-wrap{position:relative;border:1px solid var(--gris-clair);overflow:hidden;background:#fff;box-shadow:0 4px 24px rgba(0,0,0,0.05)}
+.menu-wrap img{width:100%;display:block}
+.menu-b{position:absolute;top:14px;left:14px;background:var(--terre);color:#fff;font-size:0.54rem;letter-spacing:0.2em;text-transform:uppercase;padding:5px 11px}
+.horaires{background:#fff;border:1px solid var(--gris-clair);padding:28px 36px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.h-i{text-align:center}
+.h-j{font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gris-f);margin-bottom:4px}
+.h-h{font-family:'Playfair Display',serif;font-size:0.9rem;color:var(--encre)}
+.h-f .h-h{color:var(--gris-clair);text-decoration:line-through;font-style:italic}
+
+/* ---- AGENDA ---- */
+#agenda{background:var(--blanc)}
+.agenda-i{max-width:500px;margin-bottom:48px}
+.events{display:flex;gap:24px;justify-content:flex-start;margin-bottom:36px;flex-wrap:wrap}
+.event{background:var(--blanc);display:flex;flex-direction:column;transition:all 0.3s;cursor:pointer;border:1px solid var(--gris-clair);width:260px;flex-shrink:0}
+.event:hover{background:var(--creme)}
+.ev-affiche{position:relative;overflow:hidden}
+.ev-affiche img{width:260px;height:auto;display:block}
+.ev-affiche img{width:100%;height:100%;object-fit:cover;transition:transform 0.5s ease;display:block}
+.event:hover .ev-affiche img{transform:scale(1.04)}
+.ev-affiche-zoom{position:absolute;top:10px;right:10px;background:rgba(255,255,255,0.85);width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;opacity:0;transition:opacity 0.3s}
+.event:hover .ev-affiche-zoom{opacity:1}
+.ev-info{padding:20px 22px;display:flex;flex-direction:column;gap:7px;flex:1}
+.affiche-lb{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:3000;display:none;align-items:center;justify-content:center;padding:24px;cursor:zoom-out}
+.affiche-lb.open{display:flex}
+.affiche-lb img{max-width:90vw;max-height:90vh;object-fit:contain;display:block}
+.affiche-lb-close{position:absolute;top:18px;right:24px;font-size:2rem;color:rgba(255,255,255,0.7);cursor:pointer;line-height:1}
+.affiche-lb-close:hover{color:#fff}
+.ev-date{font-size:0.56rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--terre)}
+.ev-nom{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--encre);line-height:1.3}
+.ev-type{font-size:0.7rem;color:var(--gris);letter-spacing:0.04em}
+.ev-res{margin-top:6px;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--terre);display:inline-flex;align-items:center;gap:5px;opacity:0;transform:translateX(-5px);transition:all 0.3s}
+.ev-res::after{content:'→'}
+.event:hover .ev-res{opacity:1;transform:none}
+
+/* ---- PRO ---- */
+#pro{background:var(--creme);border-top:1px solid var(--gris-clair);border-bottom:1px solid var(--gris-clair)}
+.pro-hdr{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;margin-bottom:48px}
+.pro-dl{display:inline-flex;align-items:center;gap:11px;padding:12px 22px;border:1px solid var(--gris-clair);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gris-f);transition:all 0.3s;margin-top:22px}
+.pro-dl:hover{border-color:var(--encre);color:var(--encre)}
+.pro-offres{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--gris-clair);border:1px solid var(--gris-clair);margin-bottom:48px}
+.offre{background:var(--blanc);padding:32px 28px;transition:background 0.3s}
+.offre:hover{background:var(--creme2)}
+.offre-n{font-family:'Playfair Display',serif;font-size:2.2rem;font-style:italic;color:var(--ocre-p);line-height:1;margin-bottom:14px}
+.offre-t{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--encre);margin-bottom:10px;line-height:1.3}
+.offre-d{font-size:0.82rem;color:var(--gris-f);line-height:1.75;margin-bottom:18px}
+.offre-tags{display:flex;flex-wrap:wrap;gap:5px}
+.o-tag{font-size:0.53rem;letter-spacing:0.12em;text-transform:uppercase;padding:4px 9px;border:1px solid var(--gris-clair);color:var(--gris)}
+.gal-lbl{margin-bottom:18px}
+.galerie{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:190px;gap:3px;background:var(--gris-clair);margin-bottom:44px}
+.g-item{overflow:hidden;cursor:zoom-in;background:var(--creme2);position:relative}
+.g-item:first-child{grid-column:span 2;grid-row:span 2}
+.g-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease}
+.g-item:hover img{transform:scale(1.06)}
+.g-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:0.54rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gris)}
+.pro-cta{background:var(--encre);padding:40px 44px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.pro-cta h3{font-family:'Playfair Display',serif;font-size:1.4rem;color:#fff;margin-bottom:5px}
+.pro-cta h3 em{font-style:italic;color:var(--ocre-p)}
+.pro-cta p{font-size:0.82rem;color:rgba(255,255,255,0.55)}
+.pro-cta-a{display:flex;gap:10px;flex-wrap:wrap}
+
+/* Lightbox */
+.lb{position:fixed;inset:0;background:rgba(0,0,0,0.93);z-index:2000;display:none;align-items:center;justify-content:center;padding:32px;cursor:zoom-out}
+.lb.open{display:flex}
+.lb img{max-width:90vw;max-height:88vh;object-fit:contain;cursor:default}
+.lb-x{position:absolute;top:18px;right:24px;font-size:1.9rem;color:rgba(255,255,255,0.65);cursor:pointer;line-height:1;transition:color 0.2s}
+.lb-x:hover{color:#fff}
+.lb-n{position:absolute;top:50%;transform:translateY(-50%);font-size:2.4rem;color:rgba(255,255,255,0.45);cursor:pointer;padding:16px;transition:color 0.2s;user-select:none}
+.lb-n:hover{color:#fff}
+.lb-p{left:6px}.lb-nx{right:6px}
+
+/* ---- EXPOSER ---- */
+#exposer{background:var(--blanc);padding:0}
+.exp-wrap{display:grid;grid-template-columns:1fr 1fr;min-height:360px}
+.exp-txt{padding:72px 72px 72px 48px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid var(--gris-clair)}
+.exp-txt p{margin-bottom:28px}
+.exp-vis{background:var(--creme2);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background 0.4s}
+.exp-vis:hover{background:var(--creme)}
+.exp-vis::before{content:'Exposer';font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(2.5rem,5vw,4.5rem);color:rgba(201,169,110,0.18);letter-spacing:0.1em;white-space:nowrap;transition:color 0.4s}
+.exp-vis:hover::before{color:rgba(184,92,56,0.14)}
+.exp-arrow{position:absolute;bottom:28px;right:28px;width:44px;height:44px;border:1px solid var(--gris-clair);display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--gris-f);transition:all 0.3s}
+.exp-vis:hover .exp-arrow{border-color:var(--terre);color:var(--terre);transform:translate(2px,-2px)}
+
+/* ---- CONTACT ---- */
+.contact-cols{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:48px}
+.contact-col{background:#fff;border:1px solid var(--gris-clair);padding:32px}
+.contact-col-label{font-size:0.58rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--terre);margin-bottom:8px}
+.contact-col-name{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--encre);margin-bottom:4px}
+.contact-col-role{font-size:0.78rem;color:var(--gris);font-style:italic;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--gris-clair)}
+@media(max-width:860px){.contact-cols{grid-template-columns:1fr}}
+#contact{background:var(--creme);border-top:1px solid var(--gris-clair)}
+.contact-g{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start}
+.contact-h{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.8rem);font-weight:400;line-height:1.2;color:var(--encre);margin-bottom:12px}
+.contact-h em{font-style:italic;color:var(--gris-f)}
+.contact-s{font-size:0.88rem;color:var(--gris-f);line-height:1.8;margin-bottom:36px}
+.c-btns{display:flex;flex-direction:column;gap:9px}
+.c-btn{display:flex;align-items:center;gap:16px;padding:16px 20px;background:#fff;border:1px solid var(--gris-clair);transition:all 0.3s}
+.c-btn:hover{border-color:var(--terre);transform:translateX(4px)}
+.c-ico{width:38px;height:38px;display:flex;align-items:center;justify-content:center;background:var(--creme2);font-size:0.95rem;flex-shrink:0}
+.c-txt{display:flex;flex-direction:column;gap:1px}
+.c-lbl{font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--gris-f)}
+.c-val{font-family:'Playfair Display',serif;font-size:0.96rem;color:var(--encre)}
+.carte{width:100%;aspect-ratio:4/3;background:var(--creme2);border:1px solid var(--gris-clair);overflow:hidden;margin-bottom:20px}
+.carte iframe{width:100%;height:100%;border:none;filter:saturate(0.55) contrast(1.05)}
+.adr{font-family:'Playfair Display',serif;font-style:italic;font-size:0.95rem;color:var(--gris-f);line-height:1.7;margin-bottom:18px}
+.rs{display:flex;gap:10px}
+.rs a{width:34px;height:34px;border:1px solid var(--gris-clair);display:flex;align-items:center;justify-content:center;font-size:0.68rem;color:var(--gris-f);transition:all 0.3s}
+.rs a:hover{border-color:var(--terre);color:var(--terre)}
+
+/* ---- FOOTER ---- */
+footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.f-logo{font-family:'Playfair Display',serif;font-style:italic;font-size:0.95rem;color:rgba(255,255,255,0.55)}
+.f-copy{font-size:0.56rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.28)}
+
+/* ---- ANIM ---- */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* ---- RESPONSIVE ---- */
+/* ---- CARROUSEL PRO ---- */
+.carousel-wrap{position:relative;width:100%;overflow:hidden;background:var(--encre);scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+#hero-carousel{height:100vh;min-height:500px}
+#hero-carousel .carousel-wrap{height:100%}
+#hero-carousel .carousel-track{height:100%}
+.carousel-track{display:flex;height:100%}
+.carousel-slide{width:100%;min-width:100%;flex:none;position:relative;height:100%;overflow:hidden;scroll-snap-align:start}
+.carousel-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.carousel-caption{position:absolute;bottom:0;left:0;right:0;padding:24px 36px;background:linear-gradient(to top,rgba(26,23,20,0.75) 0%,transparent 100%);color:#fff}
+.carousel-caption-titre{font-family:'Playfair Display',serif;font-size:1.1rem;font-style:italic}
+.carousel-caption-sub{font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;opacity:0.75;margin-top:3px}
+.carousel-btn{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;background:rgba(255,255,255,0.9);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:var(--encre);transition:all 0.3s;z-index:10}
+.carousel-btn:hover{background:#fff;transform:translateY(-50%) scale(1.05)}
+.carousel-prev{left:16px}
+.carousel-next{right:16px}
+.carousel-dots{position:absolute;bottom:14px;right:16px;display:flex;gap:6px;z-index:10}
+.carousel-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;transition:all 0.3s;border:none;padding:0}
+.carousel-dot.active{background:#fff;transform:scale(1.2)}
+
+/* ---- PRO HERO VIDEO ---- */
+.pro-hero{position:relative;width:100%;aspect-ratio:16/6;overflow:hidden;background:var(--encre)}
+.pro-hero video,.pro-hero .pro-hero-ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.pro-hero .pro-hero-ph{background:var(--creme2);display:flex;align-items:center;justify-content:center}
+.pro-hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(26,23,20,0.3),rgba(26,23,20,0.55))}
+.pro-hero-content{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:24px}
+.pro-hero-content h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,4rem);font-weight:400;margin-bottom:8px}
+.pro-hero-content h2 em{font-style:italic;color:var(--ocre-p)}
+.pro-hero-content p{font-size:0.85rem;letter-spacing:0.1em;opacity:0.8}
+
+/* ---- PDF VIEWER ---- */
+.pdf-section{margin-top:56px}
+.pdf-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px}
+.pdf-header h3{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--encre)}
+.pdf-actions{display:flex;gap:10px;align-items:center}
+.pdf-viewer{width:100%;height:600px;border:1px solid var(--gris-clair);background:var(--creme2)}
+.pdf-viewer iframe{width:100%;height:100%;border:none}
+
+/* ---- REFERENCES ---- */
+.refs{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.ref-tag{font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;padding:5px 12px;background:var(--creme2);border:1px solid var(--gris-clair);color:var(--gris-f)}
+
+@media(max-width:860px){
+  .carousel-slide{aspect-ratio:4/3}
+  .pro-hero{aspect-ratio:4/3}
+  .pdf-viewer{height:400px}
+  .carousel-caption{padding:16px 20px}
+}
+  :root{--nav-h:56px}
+  nav{flex-direction:row;justify-content:space-between;padding:0 24px;height:var(--nav-h);align-items:center}
+  nav.scrolled{height:var(--nav-h)}
+  .nav-brand{flex-direction:row;gap:8px;margin-bottom:0;align-items:baseline}
+  nav .nav-tag{display:none}
+  .nav-logo{font-size:1.1rem}
+  .nav-links{display:none;flex-direction:column}
+  .nav-links.open{display:flex;position:fixed;top:var(--nav-h);left:0;right:0;background:rgba(255,255,255,0.98);padding:20px 24px;border-bottom:1px solid var(--gris-clair);box-shadow:0 8px 24px rgba(0,0,0,0.07)}
+  .nav-links li{border-bottom:1px solid var(--gris-clair)}
+  .nav-links a{padding:13px 0;font-size:0.75rem;display:block}
+  .nav-burger{display:flex}
+  .container{padding:0 24px}
+  section{padding:68px 0}
+  .laire-g,.resto-g,.pro-hdr,.contact-g,.exp-wrap{grid-template-columns:1fr;gap:36px}
+  .pro-offres{grid-template-columns:1fr}
+  .events{grid-template-columns:1fr}
+  .galerie{grid-template-columns:repeat(2,1fr)}
+  .g-item:first-child{grid-column:span 2}
+  .exp-txt{padding:52px 24px;border-right:none;border-bottom:1px solid var(--gris-clair)}
+  .exp-vis{min-height:160px}
+  .horaires{gap:14px}
+  .pro-cta{flex-direction:column;align-items:flex-start;padding:28px 24px}
+  footer{padding:20px 24px;flex-direction:column;align-items:flex-start}
+}
+
+.carousel-wrap::-webkit-scrollbar{display:none}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-brand">
+    <a href="#accueil" class="nav-logo">L'Aire d'Arles</a>
+    <span class="nav-tag">L'image et le goût</span>
+  </div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#laire">De l'Aire</a></li>
+    <li><a href="#restaurant">Restaurant</a></li>
+    <li><a href="#agenda">Agenda</a></li>
+    <li><a href="#pro">Pro</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-burger" id="burger"><span></span><span></span><span></span></div>
+</nav>
+
+
+<!-- HERO — supprimé, on démarre directement sur L'Aire -->
+
+
+<!-- HERO VIDEO -->
+<section id="hero-section" style="padding:0;margin:0;position:relative;overflow:hidden;background:#000">
+  <video id="heroVideo" autoplay muted loop playsinline>
+    <source src="hero.mp4" type="video/mp4">
+  </video>
+  <div style="position:absolute;inset:0;background:rgba(0,0,0,0.12);z-index:1;pointer-events:none"></div>
+  <!-- Boutons contrôles -->
+  <div id="heroControls">
+    <button id="btnSound" onclick="toggleSound()" title="Son">🔇</button>
+    <button id="btnFull" onclick="toggleFull()" title="Plein écran">⛶</button>
+  </div>
+</section>
+
+
+<!-- L'AIRE -->
+<section id="laire">
+  <div class="container">
+    <div class="laire-g">
+      <div class="rev">
+        <div class="trait"></div>
+        <p class="label">Le lieu</p>
+        <h2 class="titre">De l'Aire</h2>
+        <p class="corps">L'Aire d'Arles est un espace convivial en plein cœur de la ville, réparti sur trois niveaux. Resto, Expo, Studio, restaurant et événements culturels s'y rencontrent pour vous offrir une expérience unique.</p>
+        <p class="corps">Une carte qui met à l'honneur les produits locaux pour une cuisine du sud authentique qui se mêle à la programmation d'un agenda proposant une culture conviviale : des ateliers, des soirées chaleureuses et des expositions artistiques. Fermé dimanche soir, mercredi et jeudi midi.</p>
+        <div class="pills">
+          <span class="pill">Restaurant & Bistrot</span>
+          <span class="pill">Expositions</span>
+          <span class="pill">Studio photo</span>
+          <span class="pill">Rooftop</span>
+          <span class="pill">Événements</span>
+          <span class="pill">Immersif</span>
+        </div>
+        <div class="info-t">
+          <div class="info-r"><span class="ik">Ouvert</span><span class="iv">Tous les midis et soirs sauf dimanche soir et mercredi</span></div>
+          <div class="info-r"><span class="ik">Capacité</span><span class="iv">30 à 50 couverts intérieur · 20 couverts terrasse</span></div>
+          <div class="info-r"><span class="ik">Groupes</span><span class="iv">Privatisation à partir de 30 personnes</span></div>
+          <div class="info-r"><span class="ik">Accès</span><span class="iv">Poussettes · Animaux bienvenus</span></div>
+        </div>
+        <a href="#contact" class="btn btn-out-f" style="margin-top:28px;display:inline-block">Contact</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- RESTAURANT -->
+<section id="restaurant">
+  <div class="container">
+    <div class="resto-g">
+      <div class="rev">
+        <div class="trait"></div>
+        <p class="label">À table</p>
+        <h2 class="titre">L'aire <em>culinaire</em></h2>
+        <p class="corps">Cuisine maison concoctée par notre chef Bruno Moreno. Une carte ancrée dans les saveurs de la Camargue et du bassin méditerranéen — produits locaux, recettes généreuses.</p>
+        <p class="corps">Chaque semaine un événement, chaque saison une nouvelle carte.</p>
+        <p class="spec-lbl">Nos spécialités</p>
+        <div class="spec-i">Tapas au choix — panisses, bulots, crevettes, manchego…</div>
+        <div class="spec-i">Moules frites — marinières, chorizo, roquefort</div>
+        <div class="spec-i">Taureau AOP Camargue — gardianne, entrecôte, burger du torero</div>
+        <div class="spec-i">Agneau Alpilles Crau</div>
+        <div class="spec-i">Paëlla & Fideuà — royale, marisco, légumes</div>
+        <div class="spec-i">Desserts maison — fondant chocolat, baba au rhum, tarte abricot romarin</div>
+      </div>
+      <div class="rev d2">
+        <div class="menu-wrap" onclick="openAffiche('menu.jpg')" style="max-width:260px;margin:0 auto;cursor:zoom-in">
+          <span class="menu-b">Été 2026</span>
+          <img src="menu.jpg" alt="La Carte de L'Aire d'Arles — Été 2026">
+          <div style="text-align:center;padding:8px 0;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gris)">Cliquer pour agrandir</div>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;max-width:260px;margin-left:auto;margin-right:auto">
+          <a href="menu.pdf" target="_blank" rel="noopener" class="pro-dl" style="flex:1;justify-content:center">↗ &nbsp;Voir PDF</a>
+          <a href="menu.pdf" download class="pro-dl" style="flex:1;justify-content:center">↓ &nbsp;Télécharger</a>
+        </div>
+      </div>
+    </div>
+    <div class="horaires rev">
+      <div class="h-i h-f"><div class="h-j">Mercredi</div><div class="h-h">Soir uniquement</div></div>
+      <div class="h-i h-f"><div class="h-j">Jeudi</div><div class="h-h">Soir uniquement</div></div>
+      <div class="h-i"><div class="h-j">Vendredi</div><div class="h-h">10h – 15h · 19h – minuit</div></div>
+      <div class="h-i"><div class="h-j">Samedi</div><div class="h-h">10h – 15h · 19h – minuit</div></div>
+      <div class="h-i"><div class="h-j">Dimanche</div><div class="h-h">10h – 15h</div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- AGENDA -->
+<section id="agenda">
+  <div class="container">
+    <div class="agenda-i rev">
+      <div class="trait"></div>
+      <p class="label">Événements</p>
+      <h2 class="titre">Nos <em>soirées</em></h2>
+      <p class="corps">Tous les vendredis : Dîner au Piano. Tous les samedis soirs : soirées mensuelles — Sévillanes, SBK, Karaoké… et de temps en temps un événement annuel ou ponctuel.</p>
+    </div>
+    <div class="events">
+
+      <div class="event rev" onclick="openAffiche('agenda-piano-vendredi.jpg')">
+        <div class="ev-affiche">
+          <img src="agenda-piano-vendredi.jpg" alt="Dîner au Piano">
+          <div class="ev-affiche-zoom">🔍</div>
+        </div>
+        <div class="ev-info">
+          <div class="ev-date">Tous les vendredis · 20h</div>
+          <div class="ev-nom">Dîner au Piano<br>avec Joaquina Cavatorta</div>
+          <div class="ev-type">Concert · Dîner raffiné</div>
+          <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
+        </div>
+      </div>
+
+      <div class="event rev d1" onclick="openAffiche('agenda-salsa-18avril.jpeg')">
+        <div class="ev-affiche">
+          <img src="agenda-salsa-18avril.jpeg" alt="Soirée SBK">
+          <div class="ev-affiche-zoom">🔍</div>
+        </div>
+        <div class="ev-info">
+          <div class="ev-date">Sam. 18 avril 2026</div>
+          <div class="ev-nom">Soirée SBK<br>Salsa Bachata Kompa</div>
+          <div class="ev-type">Danse · Initiation avec Joanna · Tapas & Paëllas</div>
+          <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
+        </div>
+      </div>
+
+      <div class="event rev d2" onclick="openAffiche('agenda-sevillanes-25avril.jpg')">
+        <div class="ev-affiche">
+          <img src="agenda-sevillanes-25avril.jpg" alt="Sévillanes">
+          <div class="ev-affiche-zoom">🔍</div>
+        </div>
+        <div class="ev-info">
+          <div class="ev-date">Sam. 25 avril 2026</div>
+          <div class="ev-nom">Sévillanes</div>
+          <div class="ev-type">Flamenco · Tapas & verre de vin 10€ · Paëlla & Fideuà</div>
+          <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Lightbox affiches -->
+    <div class="affiche-lb" id="afficheLb" onclick="closeAffiche()">
+      <span class="affiche-lb-close">×</span>
+      <img src="" alt="" id="afficheLbImg">
+    </div>
+    <div class="rev">
+      <p style="font-size:0.82rem;color:var(--gris);margin-bottom:18px">Pour toute réservation à un événement, contactez-nous directement.</p>
+      <a href="#contact" class="btn btn-out-f">Nous contacter</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- PRO -->
+<section id="pro">
+
+  <!-- Hero vidéo Pro (même fichier que le site principal) -->
+  <div class="pro-hero">
+    <!-- Décommente quand hero.mp4 est prêt :
+    <video autoplay muted loop playsinline>
+      <source src="hero.mp4" type="video/mp4">
+    </video> -->
+    <div class="pro-hero-ph">
+      <img src="facade.jpeg" alt="L'Aire d'Arles" style="width:100%;height:100%;object-fit:cover">
+    </div>
+    <div class="pro-hero-overlay"></div>
+    <div class="pro-hero-content">
+      <h2>L'Aire de tous<br>vos <em>projets</em></h2>
+      <p>A space for your event in the heart of the city · 254 m²</p>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- Intro + infos -->
+    <div class="pro-hdr" style="margin-top:64px">
+      <div class="rev">
+        <div class="trait"></div>
+        <p class="label">Professionnels & Événements</p>
+        <h2 class="titre">Un espace unique<br>au <em>cœur d'Arles</em></h2>
+        <p class="corps">Avec ses 4 niveaux, un patio et une terrasse, L'Aire est un espace unique offrant une gamme complète de services pour votre événement sur <strong>254 m²</strong>. Idéalement situé entre les Arènes romaines et la Tour Luma, sur le principal axe touristique de la ville.</p>
+        <p class="corps">Depuis 2021, le lieu a accueilli des expositions de <strong>Yoko Ono</strong>, <strong>Raymond Hains</strong>, le <strong>Prix Swiss Life</strong>, ainsi que des événements organisés par Fotodok, FuturePhotography et l'École des Gobelins.</p>
+        <div class="refs">
+          <span class="ref-tag">France 2</span>
+          <span class="ref-tag">Madame Figaro</span>
+          <span class="ref-tag">Louis Vuitton City Guide</span>
+          <span class="ref-tag">Lonely Planet</span>
+          <span class="ref-tag">Fisheye Magazine</span>
+          <span class="ref-tag">Les Inrocks</span>
+          <span class="ref-tag">Epson</span>
+          <span class="ref-tag">Hahnemühle</span>
+          <span class="ref-tag">Farrow & Ball</span>
+        </div>
+      </div>
+      <div class="rev d2">
+        <div class="info-t">
+          <div class="info-r"><span class="ik">Surface</span><span class="iv">254 m² répartis sur 4 niveaux</span></div>
+          <div class="info-r"><span class="ik">Capacité</span><span class="iv">Jusqu'à 40 personnes</span></div>
+          <div class="info-r"><span class="ik">Espaces</span><span class="iv">Patio · Galerie · Studio · Rooftop</span></div>
+          <div class="info-r"><span class="ik">Éclairage</span><span class="iv">Muséal professionnel, réglable</span></div>
+          <div class="info-r"><span class="ik">Climatisation</span><span class="iv">1er et 2e étage</span></div>
+          <div class="info-r"><span class="ik">Langues</span><span class="iv">Français · Anglais</span></div>
+          <div class="info-r"><span class="ik">Dispo</span><span class="iv">Sur demande</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Carrousel photos espaces — ajoute tes images ici -->
+
+    <!-- 3 offres -->
+    <div class="pro-offres rev">
+      <div class="offre"><div class="offre-n">01</div><div class="offre-t">Privatisation totale</div><p class="offre-d">Le lieu entier mis à disposition — restaurant, galerie, rooftop. Traiteur, sonorisation, décor sur mesure.</p><div class="offre-tags"><span class="o-tag">Soirée privée</span><span class="o-tag">Gala</span><span class="o-tag">Lancement</span></div></div>
+      <div class="offre"><div class="offre-n">02</div><div class="offre-t">Tournage & Shooting</div><p class="offre-d">Nous avons accueilli de nombreuses productions pour héberger leur HMC, bureau de prod, castings et catering.</p><div class="offre-tags"><span class="o-tag">Photo</span><span class="o-tag">Vidéo</span><span class="o-tag">Mode</span><span class="o-tag">Clip</span></div></div>
+      <div class="offre"><div class="offre-n">03</div><div class="offre-t">Séminaire & Réception</div><p class="offre-d">Espaces de travail, restauration intégrée, animation culturelle. Diffusion, conférences, ateliers, portfolio reviews.</p><div class="offre-tags"><span class="o-tag">Séminaire</span><span class="o-tag">Workshop</span><span class="o-tag">Réception</span></div></div>
+    </div>
+
+    <!-- Services -->
+    <div class="rev" style="margin-bottom:48px">
+      <p class="label" style="margin-bottom:12px">Services inclus sur demande</p>
+      <div class="refs">
+        <span class="ref-tag">Traiteur à la carte</span>
+        <span class="ref-tag">Buffet événementiel</span>
+        <span class="ref-tag">Bartenders & Barista</span>
+        <span class="ref-tag">Médiation publique</span>
+        <span class="ref-tag">Production vidéo multicaméra</span>
+        <span class="ref-tag">Community manager</span>
+        <span class="ref-tag">Régisseurs & accrocheurs</span>
+        <span class="ref-tag">DJ & live band</span>
+        <span class="ref-tag">Installation vidéo</span>
+      </div>
+    </div>
+
+    <!-- Visionneuse PDF -->
+    <div class="pdf-section rev">
+      <div class="pdf-header">
+        <h3>Plaquette de présentation</h3>
+        <div class="pdf-actions">
+          <a href="plaquette-pro.pdf" download class="pro-dl">↓ &nbsp;Télécharger (EN)</a>
+        </div>
+      </div>
+      <div class="pdf-viewer">
+        <iframe src="plaquette-pro.pdf#toolbar=0&navpanes=0&view=FitH" title="Plaquette L'Aire d'Arles"></iframe>
+      </div>
+    </div>
+
+    <!-- CTA Pro -->
+    <div class="pro-cta rev" style="margin-top:48px">
+      <div><h3>Un projet en <em>tête ?</em></h3><p>Contactez-nous pour construire votre événement sur mesure.</p></div>
+      <div class="pro-cta-a">
+        <a href="tel:+33952917110" class="btn btn-blanc">Appeler</a>
+        <a href="https://wa.me/33952917110" target="_blank" rel="noopener" class="btn btn-out-b">WhatsApp</a>
+        <a href="mailto:jonathan.pierredon@gmail.com?subject=Projet Pro — L'Aire d'Arles" class="btn btn-out-b">Email</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Lightbox -->
+<div class="lb" id="lb">
+  <span class="lb-x" id="lbX">×</span>
+  <span class="lb-n lb-p" id="lbP">‹</span>
+  <img src="" alt="" id="lbImg">
+  <span class="lb-n lb-nx" id="lbN">›</span>
+</div>
+
+
+
+
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+
+    <div class="rev" style="margin-bottom:40px">
+      <div class="trait"></div>
+      <h2 class="contact-h">Nous <em>contacter</em></h2>
+      <p class="contact-s">25 rue Porte de Laure · 13200 Arles</p>
+    </div>
+
+    <div class="contact-cols rev">
+
+      <div class="contact-col">
+        <p class="contact-col-label">Restaurant &amp; Bistrot</p>
+        <p class="contact-col-name">Bruno Moreno</p>
+        <p class="contact-col-role">Responsable restaurant</p>
+        <div class="c-btns">
+          <a href="tel:+33952917110" class="c-btn"><div class="c-ico">📞</div><div class="c-txt"><span class="c-lbl">Téléphone</span><span class="c-val">09 52 91 71 10</span></div></a>
+          <a href="https://wa.me/33952917110" target="_blank" rel="noopener" class="c-btn"><div class="c-ico">💬</div><div class="c-txt"><span class="c-lbl">WhatsApp</span><span class="c-val">09 52 91 71 10</span></div></a>
+        </div>
+          <a href="mailto:Bruno.pro.aire@gmail.com?subject=L'Aire d'Arles — Restaurant" class="c-btn"><div class="c-ico">✉️</div><div class="c-txt"><span class="c-lbl">Email</span><span class="c-val">Bruno.pro.aire@gmail.com</span></div></a>
+      </div>
+
+      <div class="contact-col">
+        <p class="contact-col-label">Expositions · Privatisation · Tournage</p>
+        <p class="contact-col-name">Jonathan Pierredon</p>
+        <p class="contact-col-role">Direction artistique du lieu</p>
+        <div class="c-btns">
+          <a href="tel:+33616350868" class="c-btn"><div class="c-ico">📞</div><div class="c-txt"><span class="c-lbl">Téléphone</span><span class="c-val">06 16 35 08 68</span></div></a>
+          <a href="https://wa.me/33616350868" target="_blank" rel="noopener" class="c-btn"><div class="c-ico">💬</div><div class="c-txt"><span class="c-lbl">WhatsApp</span><span class="c-val">06 16 35 08 68</span></div></a>
+          <a href="mailto:jonathan.pierredon@gmail.com?subject=L'Aire d'Arles" class="c-btn"><div class="c-ico">✉️</div><div class="c-txt"><span class="c-lbl">Email</span><span class="c-val">jonathan.pierredon@gmail.com</span></div></a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="contact-g rev" style="margin-top:32px">
+      <div class="carte">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2884!2d4.6276!3d43.6767!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12b5edd2c6f0b3f9%3A0x0!2s25+Rue+Porte+de+Laure%2C+13200+Arles!5e0!3m2!1sfr!2sfr!4v1" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="L'Aire d'Arles"></iframe>
+      </div>
+      <div>
+        <p class="adr">25 rue Porte de Laure<br>13200 Arles</p>
+        <div class="rs">
+          <a href="https://www.facebook.com/profile.php?id=100070974675082" target="_blank" rel="noopener" aria-label="Facebook">fb</a>
+          <a href="https://www.instagram.com/airedarles/" target="_blank" rel="noopener" aria-label="Instagram">ig</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer>
+  <span class="f-logo">L'Aire d'Arles</span>
+  <span class="f-copy">© 2026 · 25 rue Porte de Laure, Arles</span>
+</footer>
+
+
+<script>
+// ---- HERO VIDEO CONTROLS ----
+var heroMuted = true;
+
+function toggleSound() {
+  var v = document.getElementById('heroVideo');
+  var btn = document.getElementById('btnSound');
+  if (!v) return;
+  heroMuted = !heroMuted;
+  v.muted = heroMuted;
+  btn.textContent = heroMuted ? '🔇' : '🔊';
+}
+
+function toggleFull() {
+  var s = document.getElementById('hero-section');
+  var v = document.getElementById('heroVideo');
+  if (!s) return;
+  // Sur mobile, fullscreen sur la vidéo directement
+  if (v.requestFullscreen) v.requestFullscreen();
+  else if (v.webkitRequestFullscreen) v.webkitRequestFullscreen();
+  else if (v.webkitEnterFullscreen) v.webkitEnterFullscreen(); // iOS Safari
+  else if (s.requestFullscreen) s.requestFullscreen();
+}
+
+// ---- HERO VIDEO CONTROLS ----
+
+// Nav scroll
+const nb = document.getElementById('navbar');
+window.addEventListener('scroll', () => nb.classList.toggle('scrolled', window.scrollY > 80));
+
+// Burger
+const burger = document.getElementById('burger');
+const nl = document.getElementById('navLinks');
+burger.addEventListener('click', () => nl.classList.toggle('open'));
+nl.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nl.classList.remove('open')));
+
+// Reveal
+const obs = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target)}}), {threshold:0.1});
+document.querySelectorAll('.rev').forEach(el => obs.observe(el));
+
+// Flèche hero scroll
+document.getElementById('heroArrow').addEventListener('click', () => {
+  document.getElementById('laire').scrollIntoView({behavior:'smooth'});
+});
+
+// Lightbox affiches agenda
+function openAffiche(src) {
+  const lb = document.getElementById('afficheLb');
+  document.getElementById('afficheLbImg').src = src;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeAffiche() {
+  document.getElementById('afficheLb').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeAffiche();
+});
+
+// ---- CARROUSEL AUTO ----
+(function(){
+  var wrap = document.getElementById('carouselHero');
+  var track = document.getElementById('carouselTrackHero');
+  var dotsWrap = document.getElementById('carouselDotsHero');
+  var prevBtn = document.getElementById('carouselPrevHero');
+  var nextBtn = document.getElementById('carouselNextHero');
+  var current = 0;
+  var total = 14;
+  var autoTimer;
+  if (!wrap || !track) return;
+
+  // Activer le scroll sur le wrap
+  wrap.style.overflowX = 'scroll';
+  // Cacher la scrollbar
+  wrap.style.scrollbarWidth = 'none';
+  wrap.style.msOverflowStyle = 'none';
+
+  // Dots
+  for (var i = 0; i < total; i++) {
+    (function(n){
+      var d = document.createElement('button');
+      d.className = 'carousel-dot' + (n===0?' active':'');
+      d.addEventListener('click', function(){ goTo(n); });
+      if(dotsWrap) dotsWrap.appendChild(d);
+    })(i);
+  }
+
+  function goTo(n) {
+    current = ((n % total) + total) % total;
+    var w = wrap.offsetWidth;
+    wrap.scrollTo({left: current * w, behavior: 'smooth'});
+    var dots = dotsWrap ? dotsWrap.querySelectorAll('.carousel-dot') : [];
+    for(var j=0;j<dots.length;j++) dots[j].classList.toggle('active', j===current);
+    clearInterval(autoTimer);
+    autoTimer = setInterval(function(){ goTo(current+1); }, 4000);
+  }
+
+  if(prevBtn) prevBtn.addEventListener('click', function(){ goTo(current-1); });
+  if(nextBtn) nextBtn.addEventListener('click', function(){ goTo(current+1); });
+
+  // Swipe
+  var startX = 0;
+  wrap.addEventListener('touchstart', function(e){ startX = e.touches[0].clientX; },{passive:true});
+  wrap.addEventListener('touchend', function(e){
+    var diff = startX - e.changedTouches[0].clientX;
+    if(Math.abs(diff)>40) goTo(current+(diff>0?1:-1));
+  });
+
+  // Démarrer auto
+  autoTimer = setInterval(function(){ goTo(current+1); }, 4000);
+})();
+const items = document.querySelectorAll('.g-item');
+const lbEl = document.getElementById('lb');
+const lbImg = document.getElementById('lbImg');
+let idx = 0;
+const imgs = Array.from(items).map(el=>el.querySelector('img')).filter(Boolean);
+
+function openLb(i){if(!imgs.length)return;idx=i;lbImg.src=imgs[i].src;lbEl.classList.add('open');document.body.style.overflow='hidden'}
+function closeLb(){lbEl.classList.remove('open');document.body.style.overflow=''}
+
+items.forEach((it,i)=>it.addEventListener('click',()=>openLb(i)));
+document.getElementById('lbX').addEventListener('click',closeLb);
+lbEl.addEventListener('click',e=>{if(e.target===lbEl)closeLb()});
+document.getElementById('lbP').addEventListener('click',e=>{e.stopPropagation();idx=(idx-1+imgs.length)%imgs.length;lbImg.src=imgs[idx].src});
+document.getElementById('lbN').addEventListener('click',e=>{e.stopPropagation();idx=(idx+1)%imgs.length;lbImg.src=imgs[idx].src});
+document.addEventListener('keydown',e=>{
+  if(!lbEl.classList.contains('open'))return;
+  if(e.key==='Escape')closeLb();
+  if(e.key==='ArrowLeft')document.getElementById('lbP').click();
+  if(e.key==='ArrowRight')document.getElementById('lbN').click();
+});
+</script>
+
+</body>
+</html>
