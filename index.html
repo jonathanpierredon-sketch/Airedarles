@@ -316,6 +316,19 @@ section{padding:96px 0}
 .rs a{width:34px;height:34px;border:1px solid var(--gris-clair);display:flex;align-items:center;justify-content:center;font-size:0.68rem;color:var(--gris-f);transition:all 0.3s}
 .rs a:hover{border-color:var(--terre);color:var(--terre)}
 
+/* ---- EXPOSER ---- */
+#exposer{background:var(--encre);padding:80px 0}
+.exposer-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.exposer-txt .titre{color:#fff}
+.exposer-txt .titre em{color:var(--ocre-p)}
+.exposer-txt .corps{color:rgba(255,255,255,0.7)}
+.exposer-appel{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);padding:32px;border-radius:2px;margin-top:28px}
+.exposer-appel p{font-size:0.88rem;color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:20px}
+.exposer-appel strong{color:rgba(255,255,255,0.9);font-weight:400}
+.exposer-visuel{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;text-align:center}
+.exposer-logo-txt{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,5vw,4rem);font-style:italic;color:rgba(255,255,255,0.08);letter-spacing:0.15em}
+@media(max-width:860px){.exposer-inner{grid-template-columns:1fr;gap:40px}}
+
 /* ---- FOOTER ---- */
 footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
 .f-logo{font-family:'Playfair Display',serif;font-style:italic;font-size:0.95rem;color:rgba(255,255,255,0.55)}
@@ -415,6 +428,7 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
     <li><a href="#restaurant">Restaurant</a></li>
     <li><a href="#agenda">Agenda</a></li>
     <li><a href="#pro">Pro</a></li>
+    <li><a href="#exposer">Exposer</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="nav-burger" id="burger"><span></span><span></span><span></span></div>
@@ -427,7 +441,7 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
 <!-- HERO VIDEO -->
 <section id="hero-section" style="padding:0;margin:0;position:relative;overflow:hidden;background:#000">
   <video id="heroVideo" autoplay muted loop playsinline>
-    <source src="hero.mp4" type="video/mp4">
+    <source src="teaser_hero_720.mp4" type="video/mp4">
   </video>
   <div style="position:absolute;inset:0;background:rgba(0,0,0,0.12);z-index:1;pointer-events:none"></div>
   <!-- Boutons contrôles -->
@@ -519,8 +533,19 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
       <h2 class="titre">Nos <em>soirées</em></h2>
       <p class="corps">Tous les vendredis : Dîner au Piano. Tous les samedis soirs : soirées mensuelles — Sévillanes, SBK, Karaoké… et de temps en temps un événement annuel ou ponctuel.</p>
     </div>
+    <!-- ============================================================
+         AGENDA — POUR MODIFIER UN ÉVÉNEMENT :
+         1. Changer la date dans ev-date
+         2. Changer le titre dans ev-nom
+         3. Changer le type dans ev-type
+         4. Changer l'image : mettre le nouveau fichier dans le dossier
+            et changer le nom dans onclick="openAffiche('...')" et src="..."
+         Pour AJOUTER un événement : copier un bloc event complet
+         Pour SUPPRIMER : effacer le bloc event
+    ============================================================ -->
     <div class="events">
 
+      <!-- ÉVÉNEMENT 1 -->
       <div class="event rev" onclick="openAffiche('agenda-piano-vendredi.jpg')">
         <div class="ev-affiche">
           <img src="agenda-piano-vendredi.jpg" alt="Dîner au Piano">
@@ -534,26 +559,42 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
         </div>
       </div>
 
-      <div class="event rev d1" onclick="openAffiche('agenda-salsa-18avril.jpeg')">
+      <!-- ÉVÉNEMENT 2 -->
+      <div class="event rev d1" onclick="openAffiche('sbk.jpeg')">
         <div class="ev-affiche">
-          <img src="agenda-salsa-18avril.jpeg" alt="Soirée SBK">
+          <img src="sbk.jpeg" alt="Soirée SBK">
           <div class="ev-affiche-zoom">🔍</div>
         </div>
         <div class="ev-info">
-          <div class="ev-date">Sam. 18 avril 2026</div>
+          <div class="ev-date">Sam. 16 mai 2026</div>
           <div class="ev-nom">Soirée SBK<br>Salsa Bachata Kompa</div>
           <div class="ev-type">Danse · Initiation avec Joanna · Tapas & Paëllas</div>
           <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
         </div>
       </div>
 
-      <div class="event rev d2" onclick="openAffiche('agenda-sevillanes-25avril.jpg')">
+      <!-- ÉVÉNEMENT 3 -->
+      <div class="event rev d2" onclick="openAffiche('karaoke.jpg')">
         <div class="ev-affiche">
-          <img src="agenda-sevillanes-25avril.jpg" alt="Sévillanes">
+          <img src="karaoke.jpg" alt="Sévillanes">
           <div class="ev-affiche-zoom">🔍</div>
         </div>
         <div class="ev-info">
-          <div class="ev-date">Sam. 25 avril 2026</div>
+          <div class="ev-date">Sam. 23 mai 2026</div>
+          <div class="ev-nom">Karaoké</div>
+          <div class="ev-type">Avec le duo Laz en concert juke box pendant le dîner pour commencer la soirée</div>
+          <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
+        </div>
+      </div>
+		
+		    <!-- ÉVÉNEMENT 4 -->
+      <div class="event rev d2" onclick="openAffiche('sevillanes.jpg')">
+        <div class="ev-affiche">
+          <img src="sevillanes.jpg" alt="Sévillanes">
+          <div class="ev-affiche-zoom">🔍</div>
+        </div>
+        <div class="ev-info">
+          <div class="ev-date">Sam. 13 juin 2026</div>
           <div class="ev-nom">Sévillanes</div>
           <div class="ev-type">Flamenco · Tapas & verre de vin 10€ · Paëlla & Fideuà</div>
           <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
@@ -582,7 +623,7 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
   <div class="pro-hero">
     <!-- Décommente quand hero.mp4 est prêt :
     <video autoplay muted loop playsinline>
-      <source src="hero.mp4" type="video/mp4">
+      <source src="teaser_hero_720.mp4" type="video/mp4">
     </video> -->
     <div class="pro-hero-ph">
       <img src="facade.jpeg" alt="L'Aire d'Arles" style="width:100%;height:100%;object-fit:cover">
@@ -690,6 +731,39 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
 
 
 
+
+
+<!-- EXPOSER -->
+<section id="exposer">
+  <div class="container">
+    <div class="exposer-inner">
+
+      <div class="exposer-txt rev">
+        <div class="trait" style="background:var(--ocre)"></div>
+        <p class="label">Appel à projet</p>
+        <h2 class="titre">Exposer à<br><em>L'Aire d'Arles</em></h2>
+        <p class="corps" style="color:rgba(255,255,255,0.7)">L'Aire d'Arles met ses espaces à disposition des artistes, photographes et commissaires d'exposition pendant les Rencontres de la Photographie et toute l'année.</p>
+        <p class="corps" style="color:rgba(255,255,255,0.7)">Murs d'exposition, salle immersive, studio photo, rooftop — des espaces uniques au cœur de la ville.</p>
+
+        <div class="exposer-appel">
+          <p><strong>📢 Appel à projet en cours</strong><br>
+          Ce projet d'exposition verra le jour en fonction du nombre de participants et candidatures reçues. Artistes, galeries, marques — soumettez votre projet et rejoignez l'aventure.</p>
+          <a href="https://arlesexpo.xo.je" target="_blank" rel="noopener" class="btn btn-terre" style="display:inline-block">
+            Déposer un projet ↗
+          </a>
+        </div>
+      </div>
+
+      <div class="exposer-visuel rev d2">
+        <div class="exposer-logo-txt">Exposer</div>
+        <a href="https://arlesexpo.xo.je" target="_blank" rel="noopener" class="btn btn-out-b" style="border-color:rgba(255,255,255,0.3);color:rgba(255,255,255,0.8)">
+          Voir le site dédié ↗
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 
 <!-- CONTACT -->
