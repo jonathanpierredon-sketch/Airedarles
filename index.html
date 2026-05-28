@@ -535,19 +535,8 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
       <h2 class="titre">Nos <em>soirées</em></h2>
       <p class="corps">Tous les vendredis : Dîner au Piano. Tous les samedis soirs : soirées mensuelles — Sévillanes, SBK, Karaoké… et de temps en temps un événement annuel ou ponctuel.</p>
     </div>
-    <!-- ============================================================
-         AGENDA — POUR MODIFIER UN ÉVÉNEMENT :
-         1. Changer la date dans ev-date
-         2. Changer le titre dans ev-nom
-         3. Changer le type dans ev-type
-         4. Changer l'image : mettre le nouveau fichier dans le dossier
-            et changer le nom dans onclick="openAffiche('...')" et src="..."
-         Pour AJOUTER un événement : copier un bloc event complet
-         Pour SUPPRIMER : effacer le bloc event
-    ============================================================ -->
-    <div class="events">
+<div class="events">
 
-      <!-- ÉVÉNEMENT 1 -->
       <div class="event rev" onclick="openAffiche('agenda-piano-vendredi.jpg')">
         <div class="ev-affiche">
           <img src="agenda-piano-vendredi.jpg" alt="Dîner au Piano">
@@ -562,31 +551,6 @@ Un univers musical unique, fait uniquement de compositions personnelles, dans un
         </div>
       </div>
 
-      <!-- ÉVÉNEMENT 3 -->
-      <div class="event rev d2" onclick="openAffiche('karaoke.jpg')">
-        <div class="ev-affiche">
-          <img src="karaoke.jpg" alt="Karaoké">
-          <div class="ev-affiche-zoom">🔍</div>
-        </div>
-        <div class="ev-info">
-          <div class="ev-date">Sam. 23 mai 2026</div>
-          <div class="ev-nom">Karaoké</div>
-          <div class="ev-type">Soirée Karaoké – Samedi 23 mai à L'Aire d'Arles
-Un dîner pour chanter.
-Ici, tout commence à table… et finit au micro.
-Samedi 23 mai, rendez-vous à L'Aire d'Arles pour une nouvelle soirée karaoké sous l'égide du duo Laz.
-Pendant le dîner, Coralie et Sébastien vous embarquent dans leur concert juke-box : vous choisissez les titres, ils les interprètent en live, installant une ambiance chaleureuse et complice.
-Puis, naturellement, la soirée bascule…
-Direction le premier étage : le micro vous attend. Que vous soyez chanteur d'un soir ou habitué des refrains partagés, c'est le moment de prendre votre place et de faire vibrer la salle.
-Un dîner pour chanter, des chansons pour se retrouver, et une soirée qui ne demande qu'à monter en voix.
-🎶 Concert juke-box pendant le dîner
-Karaoké au premier étage
-</div>
-          <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
-        </div>
-      </div>
-
-      <!-- ÉVÉNEMENT 4 — SARAH THOMAS -->
       <div class="event rev d1" onclick="openAffiche('affiche_sarah_thomas_arles.jpg')">
         <div class="ev-affiche">
           <img src="affiche_sarah_thomas_arles.jpg" alt="Exposition Sarah Thomas">
@@ -603,7 +567,6 @@ J'essaie d'approcher les premières danses de cette vie en perpétuelle inventio
         </div>
       </div>
 
-      <!-- ÉVÉNEMENT 5 — NUIT DE LA POÉSIE -->
       <div class="event rev d2" onclick="openAffiche('afficheN2P26.jpg')">
         <div class="ev-affiche">
           <img src="afficheN2P26.jpg" alt="Nuit de la Poésie">
@@ -617,7 +580,6 @@ J'essaie d'approcher les premières danses de cette vie en perpétuelle inventio
         </div>
       </div>
 
-		    <!-- ÉVÉNEMENT 4 -->
       <div class="event rev d2" onclick="openAffiche('9 jui.jpg')">
         <div class="ev-affiche">
           <img src="9 juin.jpg" alt="Dîner concert">
@@ -636,7 +598,6 @@ Ensemble, ils composent un moment suspendu, entre douceur, vertige et lumière �
         </div>
       </div>
 
-				    <!-- ÉVÉNEMENT 5 -->
       <div class="event rev d2" onclick="openAffiche('sevillanes.jpg')">
         <div class="ev-affiche">
           <img src="sevillanes.jpg" alt="Sévillanes">
@@ -645,30 +606,54 @@ Ensemble, ils composent un moment suspendu, entre douceur, vertige et lumière �
         <div class="ev-info">
           <div class="ev-date">Sam. 13 juin 2026</div>
           <div class="ev-nom">Sévillanes</div>
-          <div class="ev-type">Samedi 13 juin, c'est le moment de sortir vos grandes robes à pois, vos éventails
-et de venir danser les sévillanes à L'Aire d'Arles.
+          <div class="ev-type">Samedi 13 juin, c'est le moment de sortir vos grandes robes à pois, vos éventails et de venir danser les sévillanes à L'Aire d'Arles.
 
-Convivialité et authenticité avec ce petit bal dansant mensuel arlésien,
-proposé par le tablao de L'Aire d'Arles, qui fait vivre les sévillanes chaque mois.
+Convivialité et authenticité avec ce petit bal dansant mensuel arlésien, proposé par le tablao de L'Aire d'Arles, qui fait vivre les sévillanes chaque mois.
 
-Ici, on vient dîner une cuisine du Sud,
-des produits de notre terroir — Camargue, Crau, Alpilles —
-avec des tapas, une offre un verre de vin + un tapas à 10€,
-et des paëllas et fideuà servies dans leurs poêles en fonte individuelles, cuites au four.
+Ici, on vient dîner une cuisine du Sud, des produits de notre terroir — Camargue, Crau, Alpilles — avec des tapas, une offre un verre de vin + un tapas à 10€, et des paëllas et fideuà servies dans leurs poêles en fonte individuelles, cuites au four.
 
-Ensuite, on danse en regardant les autres,
-on imite, on imite la prof aussi,
-on s'amuse, on fait des rencontres…
-et on se régale.
+Ensuite, on danse en regardant les autres, on imite, on imite la prof aussi, on s'amuse, on fait des rencontres… et on se régale.
 
 Des robes seront également proposées à la vente sur place.</div>
           <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
         </div>
       </div>
 
+      <div class="event rev d2" onclick="openAffiche('misskenza.jpg')">
+        <div class="ev-affiche">
+          <img src="misskenza.jpg" alt="Concert Miss Kenza & Les Gentlemen">
+          <div class="ev-affiche-zoom">🔍</div>
+        </div>
+        <div class="ev-info">
+          <div class="ev-date">Sam. 20 juin 2026</div>
+          <div class="ev-nom">Concert<br>Miss Kenza</div>
+          <div class="ev-type">🎵 LIVE MUSIC • SAMEDI 20 JUIN À 20H 🎵
+Le groove s'invite chez nous ! Retrouvez Miss Kenza & Les Gentlemen pour une soirée 100% Rhythm & Blues, Soul & Funk ! 🔥✨
+Venez vibrer, bouger et partager un moment unique pour lancer l'été en beauté. 🕺💃
+🍽️ Dîner-Concert : Pensez à réserver votre table pour dîner au plus près du live ! Les places sont limitées. 😉</div>
+          <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
+        </div>
+      </div>
+
+      <div class="event rev d2" onclick="openAffiche('21juin.jpg')">
+        <div class="ev-affiche">
+          <img src="21juin.jpg" alt="Fête de la Musique — Karaoké Géant">
+          <div class="ev-affiche-zoom">🔍</div>
+        </div>
+        <div class="ev-info">
+          <div class="ev-date">Dim. 21 juin 2026</div>
+          <div class="ev-nom">Fête de la Musique<br>Karaoké sur Écran Géant</div>
+          <div class="ev-type">🎤 FÊTE DE LA MUSIQUE : C'EST VOUS QUI CHANTEZ ! 🌟
+Le dimanche 21 juin, la rue s'enflamme pour la Fête de la Musique ! Pour cette soirée exceptionnelle, L'Aire d'Arles passe en mode grand écran. 
+Retrouvez le fameux duo Laz et venez chanter vos morceaux préférés en plein air, sur notre écran géant installé directement devant le restaurant ! 🎬🎶
+Que vous veniez pousser la chansonnette au micro, encourager vos amis ou simplement profiter de l'ambiance électrique de la rue, l'énergie sera au rendez-vous.
+Un grand moment de partage, de rires et de musique pour célébrer le solstice d'été tous ensemble. On vous attend nombreux pour faire vibrer le quartier ! 🥳🔥</div>
+          <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
+        </div>
+      </div>
+
     </div>
 
-    <!-- Lightbox affiches -->
     <div class="affiche-lb" id="afficheLb" onclick="closeAffiche()">
       <span class="affiche-lb-close">×</span>
       <img src="" alt="" id="afficheLbImg">
