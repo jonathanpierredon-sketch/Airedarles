@@ -292,14 +292,16 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
 </nav>
 
 <section id="hero-section" style="padding:0;margin:0;position:relative;overflow:hidden;background:#000">
-  <video id="heroVideo" autoplay muted loop playsinline>
+  <video id="heroVideo" autoplay muted loop playsinline poster="hero-poster.jpg">
     <source src="teaser_hero_720.mp4" type="video/mp4">
   </video>
   <div style="position:absolute;inset:0;background:rgba(0,0,0,0.12);z-index:1;pointer-events:none"></div>
+  
   <div id="heroControls">
     <button id="btnSound" onclick="toggleSound()" title="Son">🔇</button>
     <button id="btnFull" onclick="toggleFull()" title="Plein écran">⛶</button>
   </div>
+</section>
 </section>
 
 <section id="laire">
