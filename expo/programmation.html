@@ -267,9 +267,9 @@
         }
 
         /* GESTION DU RESTRUCTURAGE PAR SCRIPT (FR CACHÉ PAR DÉFAUT SI EN) */
-        [lang="en"] {
-            display: none;
-        }
+      .en {
+    display: none;
+}
 
         /* RESPONSIVE SMARTPHONES */
         @media (max-width: 768px) {
@@ -779,39 +779,31 @@
 
     </div>
 
-    <script>
-        function setLanguage(lang) {
-            // Changement d'état actif sur les boutons de sélection
-            const buttons = document.querySelectorAll('.lang-btn');
-            buttons.forEach(btn => btn.classList.remove('active'));
-            
-            if(lang === 'fr') {
-                buttons[0].classList.add('active');
-                
-                // On affiche la langue française
-                document.querySelectorAll('[lang="fr"]').forEach(el => el.style.display = 'inline-block');
-                document.querySelectorAll('span.fr').forEach(el => el.style.display = 'inline');
-                document.querySelectorAll('div.fr').forEach(el => el.style.display = 'block');
-                document.querySelectorAll('h1.fr, h2.fr, th.fr, td.fr, p.fr').forEach(el => el.style.display = '');
-                
-                // On masque l'anglais
-                document.querySelectorAll('[lang="en"], span.en, div.en, h1.en, h2.en, th.en, td.en, p.en').forEach(el => el.style.display = 'none');
-            } else {
-                buttons[1].classList.add('active');
-                
-                // On affiche la langue anglaise
-                document.querySelectorAll('[lang="en"]').forEach(el => el.style.display = 'inline-block');
-                document.querySelectorAll('span.en').forEach(el => el.style.display = 'inline');
-                document.querySelectorAll('div.en').forEach(el => el.style.display = 'block');
-                document.querySelectorAll('h1.en, h2.en, th.en, td.en, p.en').forEach(el => el.style.display = '');
-                
-                // On masque le français
-                document.querySelectorAll('[lang="fr"], span.fr, div.fr, h1.fr, h2.fr, th.fr, td.fr, p.fr').forEach(el => el.style.display = 'none');
-            }
-        }
+ <script>
+    function setLanguage(lang) {
+        // Gestion visuelle des boutons
+        const buttons = document.querySelectorAll('.lang-btn');
+        buttons.forEach(btn => btn.classList.remove('active'));
         
-        // Initialisation automatique de la page en Français au premier chargement
-        setLanguage('fr');
-    </script>
+        if(lang === 'fr') {
+            buttons[0].classList.add('active');
+            
+            // On affiche le français (en retirant le masquage inline)
+            document.querySelectorAll('.fr').forEach(el => el.style.display = '');
+            // On masque l'anglais
+            document.querySelectorAll('.en').forEach(el => el.style.display = 'none');
+        } else {
+            buttons[1].classList.add('active');
+            
+            // On affiche l'anglais
+            document.querySelectorAll('.en').forEach(el => el.style.display = '');
+            // On masque le français
+            document.querySelectorAll('.fr').forEach(el => el.style.display = 'none');
+        }
+    }
+    
+    // Initialisation automatique au premier chargement
+    setLanguage('fr');
+</script>
 </body>
 </html>
