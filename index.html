@@ -300,15 +300,13 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
 
   <div id="playButtonOverlay" 
        onclick="document.getElementById('heroVideo').play(); this.style.display='none';"
-       style="position:absolute; inset:0; z-index:10; display:flex; align-items:center; justify-content:center; cursor:pointer; background:rgba(0,0,0,0.2);">
+       style="display:none; position:absolute; inset:0; z-index:9999; align-items:center; justify-content:center; cursor:pointer; background:rgba(0,0,0,0.3);">
     
     <div style="padding: 20px 40px; border: 2px solid white; color: white; border-radius: 50px; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 2px; backdrop-filter: blur(5px);">
       Play
     </div>
   </div>
 
-  <div style="position:absolute; inset:0; background:rgba(0,0,0,0.12); z-index:1; pointer-events:none"></div>
-  
   <div id="heroControls" style="position:absolute; bottom:20px; right:20px; z-index:5;">
     <button id="btnSound" onclick="toggleSound()" title="Son">🔇</button>
     <button id="btnFull" onclick="toggleFull()" title="Plein écran">⛶</button>
@@ -774,6 +772,21 @@ if(items.length > 0 && lbEl) {
     if(e.key==='ArrowRight')document.getElementById('lbN').click();
   });
 }
+</script>
+	<script>
+  window.addEventListener('load', function() {
+    var video = document.getElementById('heroVideo');
+    var overlay = document.getElementById('playButtonOverlay');
+
+    var playPromise = video.play();
+
+    if (playPromise !== undefined) {
+      playPromise.catch(function(error) {
+        // L'autoplay a été bloqué par Chrome ! On affiche le bouton.
+        overlay.style.display = 'flex';
+      });
+    }
+  });
 </script>
 </body>
 </html>
