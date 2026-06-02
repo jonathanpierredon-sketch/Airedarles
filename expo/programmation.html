@@ -1,55 +1,3 @@
-
-Claude a terminé la réponse.
-
-<!DOCTYPE html> <html lang="fr"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Programmation - L'Aire d'Arles</title> <style> /* BASE STYLES */ *, *::before, *::after { box-sizing: border-box;
-
-pasted
-
-gemini m'a fait une jolie page qui doit se traduire en anglais mais il n'as pas tout traduit et il galere à me le faire bien stp refait moi le code propre en entier de cette page afin que tout se traduise bien comme il faut
-
-22:52
-
-Reading frontend design skill
-Reading frontend design skill
-Le problème vient du pattern de traduction — avoir des <span class="fr"> et <span class="en"> partout rend le code ingérable. Je vais tout refaire avec un système propre basé sur data-fr / data-en et un JS centralisé.
-
-
-Fichier créé, lu un fichier
-Fichier créé, lu un fichier
-Voilà, code entièrement refait et propre. Le problème de Gemini était qu'il utilisait des <span class="fr"> et <span class="en"> doublés partout — ingérable, fragile, et facile à oublier.
-
-Le nouveau système : chaque élément traduit a simplement data-fr="..." et data-en="..." en attributs. Le JS fait un seul querySelectorAll('[data-fr]') et met à jour tous les textes d'un coup, sans exception possible. Impossible d'en oublier un.
-
-Ce qui est traduit maintenant :
-
-Header (titre, sous-titre, lien retour)
-Légende (tous les espaces)
-Tableau : en-têtes, jours, créneaux (Matin/Après-midi/Soirée), cartes événements, cellules "Disponible/Available"
-Timeline complète : titres de jours, horaires, tags d'espaces, titres et descriptions de chaque événement
-
-Programmation
-Code · HTML 
-oui ça marche mais dimanche on sera ouvert tu peux donc bien rajouter une ligne dans la grille pour marquer les créneaux disponible stp
-
-22:56
-
-3 fichiers modifiés, lu un fichier
-3 fichiers modifiés, lu un fichier
-Dimanche 12 juillet ajouté — 3 créneaux tous disponibles dans le tableau, et dans la timeline un bloc récapitulatif qui indique que tous les espaces sont libres à réserver, en FR et EN.
-
-
-Programmation
-Code · HTML 
-
-
-
-
-
-Claude est une IA et peut faire des erreurs. Veuillez vérifier les réponses.
-
-
-raw
-Programmation · HTML
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -61,7 +9,7 @@ Programmation · HTML
     <style>
         /* ======= RESET & BASE ======= */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
- 
+
         :root {
             --bg:       #080c14;
             --bg2:      #0f1623;
@@ -78,21 +26,21 @@ Programmation · HTML
             --dispo-fg: #10b981;
             --dispo-border: #1e3a2f;
         }
- 
+
         body {
             font-family: 'DM Sans', sans-serif;
             background-color: var(--bg);
             color: var(--text);
             line-height: 1.6;
         }
- 
+
         /* ======= LAYOUT ======= */
         .page-wrap {
             max-width: 1240px;
             margin: 0 auto;
             padding: 0 24px 80px;
         }
- 
+
         /* ======= LANG SWITCHER ======= */
         .topbar {
             display: flex;
@@ -120,7 +68,7 @@ Programmation · HTML
         }
         .lang-btn:hover { border-color: var(--accent); color: var(--text); }
         .lang-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
- 
+
         /* ======= HEADER ======= */
         header {
             text-align: center;
@@ -165,7 +113,7 @@ Programmation · HTML
             transition: color 0.2s;
         }
         .back-link:hover { color: #82b4ff; }
- 
+
         /* ======= LÉGENDE ======= */
         .legend {
             background: var(--bg2);
@@ -203,7 +151,7 @@ Programmation · HTML
         .dot-terrasse  { background: var(--terrasse); }
         .dot-etage2    { background: var(--etage2); }
         .dot-dispo     { background: var(--dispo-bg); border: 1.5px dashed var(--dispo-fg); }
- 
+
         /* ======= TABLE (DESKTOP) ======= */
         .table-wrap {
             overflow-x: auto;
@@ -247,7 +195,7 @@ Programmation · HTML
             white-space: nowrap;
             min-width: 80px;
         }
- 
+
         /* Event cards */
         .ecard {
             padding: 10px 12px;
@@ -260,7 +208,7 @@ Programmation · HTML
         .ecard-rooftop   { background: var(--rooftop);   color: #fff; }
         .ecard-terrasse  { background: var(--terrasse);  color: #fff; }
         .ecard-etage2    { background: var(--etage2);    color: #fff; }
- 
+
         .dispo-cell {
             display: flex;
             align-items: center;
@@ -276,7 +224,7 @@ Programmation · HTML
             text-transform: uppercase;
             letter-spacing: 0.05em;
         }
- 
+
         /* ======= TIMELINE (toujours visible) ======= */
         .timeline-section { margin-top: 10px; }
         .timeline-section > h2 {
@@ -288,7 +236,7 @@ Programmation · HTML
             padding-left: 14px;
             color: #fff;
         }
- 
+
         .day-block {
             background: var(--bg2);
             border: 1px solid var(--border);
@@ -306,7 +254,7 @@ Programmation · HTML
             border-bottom: 1px solid var(--border);
         }
         .events-list { display: flex; flex-direction: column; gap: 18px; }
- 
+
         .event-row {
             display: flex;
             gap: 20px;
@@ -336,7 +284,7 @@ Programmation · HTML
         .tag-rooftop   { background: var(--rooftop); }
         .tag-terrasse  { background: var(--terrasse); }
         .tag-etage2    { background: var(--etage2); }
- 
+
         .event-title {
             font-weight: 700;
             font-size: 0.98rem;
@@ -344,7 +292,7 @@ Programmation · HTML
             margin-bottom: 4px;
         }
         .event-desc { font-size: 0.87rem; color: var(--muted); }
- 
+
         /* ======= RESPONSIVE ======= */
         @media (max-width: 768px) {
             .table-wrap { display: none; }
@@ -354,9 +302,9 @@ Programmation · HTML
     </style>
 </head>
 <body>
- 
+
 <div class="page-wrap">
- 
+
     <!-- TOPBAR -->
     <div class="topbar">
         <div class="lang-switcher">
@@ -364,7 +312,7 @@ Programmation · HTML
             <button class="lang-btn"        onclick="setLang('en')">🇬🇧 EN</button>
         </div>
     </div>
- 
+
     <!-- HEADER -->
     <header>
         <span class="wip-badge">Work in Progress</span>
@@ -376,7 +324,7 @@ Programmation · HTML
             <span data-fr="Retour à la page principale" data-en="Back to main page"></span>
         </a>
     </header>
- 
+
     <!-- LÉGENDE -->
     <div class="legend">
         <div class="legend-label" data-fr="Espaces de L'Aire" data-en="Venues & Spaces at L'Aire"></div>
@@ -388,7 +336,7 @@ Programmation · HTML
             <div class="legend-item"><div class="color-dot dot-dispo"></div><span data-fr="Créneau libre / À réserver" data-en="Available slot / To book"></span></div>
         </div>
     </div>
- 
+
     <!-- ===================== TABLE DESKTOP ===================== -->
     <div class="table-wrap">
         <table>
@@ -403,7 +351,7 @@ Programmation · HTML
                 </tr>
             </thead>
             <tbody>
- 
+
                 <!-- LUNDI 6 -->
                 <tr>
                     <td class="day-cell" rowspan="3" data-fr="Lundi 6" data-en="Monday 6"></td>
@@ -427,7 +375,7 @@ Programmation · HTML
                     <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
                     <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
                 </tr>
- 
+
                 <!-- MARDI 7 -->
                 <tr>
                     <td class="day-cell" rowspan="3" data-fr="Mardi 7" data-en="Tuesday 7"></td>
@@ -451,7 +399,7 @@ Programmation · HTML
                     <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
                     <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
                 </tr>
- 
+
                 <!-- MERCREDI 8 -->
                 <tr>
                     <td class="day-cell" rowspan="3" data-fr="Mercredi 8" data-en="Wednesday 8"></td>
@@ -475,7 +423,7 @@ Programmation · HTML
                     <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
                     <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
                 </tr>
- 
+
                 <!-- JEUDI 9 -->
                 <tr>
                     <td class="day-cell" rowspan="3" data-fr="Jeudi 9" data-en="Thursday 9"></td>
@@ -502,7 +450,7 @@ Programmation · HTML
                     <td><div class="ecard ecard-rooftop"><div class="ecard-title">FUTURES Photography</div><div class="ecard-desc" data-fr="Soirée de clôture" data-en="Closing Party"></div></div></td>
                     <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
                 </tr>
- 
+
                 <!-- VENDREDI 10 -->
                 <tr>
                     <td class="day-cell" rowspan="3" data-fr="Vendredi 10" data-en="Friday 10"></td>
@@ -526,7 +474,7 @@ Programmation · HTML
                     <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
                     <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
                 </tr>
- 
+
                 <!-- SAMEDI 11 -->
                 <tr>
                     <td class="day-cell" rowspan="3" data-fr="Samedi 11" data-en="Saturday 11"></td>
@@ -550,7 +498,7 @@ Programmation · HTML
                     <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
                     <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
                 </tr>
- 
+
                 <!-- DIMANCHE 12 -->
                 <tr>
                     <td class="day-cell" rowspan="3" data-fr="Dimanche 12" data-en="Sunday 12"></td>
@@ -574,17 +522,17 @@ Programmation · HTML
                     <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
                     <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
                 </tr>
- 
+
             </tbody>
         </table>
     </div>
     <!-- ===================== FIN TABLE ===================== -->
- 
- 
+
+
     <!-- ===================== TIMELINE DÉTAILLÉE ===================== -->
     <div class="timeline-section">
         <h2 data-fr="Détail Jour par Jour" data-en="Day-by-Day Programme"></h2>
- 
+
         <!-- LUNDI 6 -->
         <div class="day-block">
             <div class="day-block-title" data-fr="Lundi 6 Juillet" data-en="Monday, July 6th"></div>
@@ -602,7 +550,7 @@ Programmation · HTML
                 </div>
             </div>
         </div>
- 
+
         <!-- MARDI 7 -->
         <div class="day-block">
             <div class="day-block-title" data-fr="Mardi 7 Juillet" data-en="Tuesday, July 7th"></div>
@@ -636,7 +584,7 @@ Programmation · HTML
                 </div>
             </div>
         </div>
- 
+
         <!-- MERCREDI 8 -->
         <div class="day-block">
             <div class="day-block-title" data-fr="Mercredi 8 Juillet" data-en="Wednesday, July 8th"></div>
@@ -670,7 +618,7 @@ Programmation · HTML
                 </div>
             </div>
         </div>
- 
+
         <!-- JEUDI 9 -->
         <div class="day-block">
             <div class="day-block-title" data-fr="Jeudi 9 Juillet" data-en="Thursday, July 9th"></div>
@@ -704,7 +652,7 @@ Programmation · HTML
                 </div>
             </div>
         </div>
- 
+
         <!-- VENDREDI 10 -->
         <div class="day-block">
             <div class="day-block-title" data-fr="Vendredi 10 Juillet" data-en="Friday, July 10th"></div>
@@ -730,7 +678,7 @@ Programmation · HTML
                 </div>
             </div>
         </div>
- 
+
         <!-- SAMEDI 11 -->
         <div class="day-block">
             <div class="day-block-title" data-fr="Samedi 11 Juillet" data-en="Saturday, July 11th"></div>
@@ -745,7 +693,7 @@ Programmation · HTML
                 </div>
             </div>
         </div>
- 
+
         <!-- DIMANCHE 12 -->
         <div class="day-block">
             <div class="day-block-title" data-fr="Dimanche 12 Juillet" data-en="Sunday, July 12th"></div>
@@ -765,37 +713,36 @@ Programmation · HTML
                 </div>
             </div>
         </div>
- 
+
     </div>
     <!-- ===================== FIN TIMELINE ===================== -->
- 
+
 </div><!-- /page-wrap -->
- 
+
 <script>
     let currentLang = 'fr';
- 
+
     function setLang(lang) {
         currentLang = lang;
- 
+
         // Mettre à jour les boutons
         document.querySelectorAll('.lang-btn').forEach((btn, i) => {
             btn.classList.toggle('active', (i === 0 && lang === 'fr') || (i === 1 && lang === 'en'));
         });
- 
+
         // Mettre à jour tous les éléments avec data-fr / data-en
         document.querySelectorAll('[data-fr]').forEach(el => {
             const text = el.getAttribute('data-' + lang);
             if (text !== null) el.textContent = text;
         });
- 
+
         // Mettre à jour l'attribut lang de <html>
         document.documentElement.lang = lang;
     }
- 
+
     // Initialisation
     setLang('fr');
 </script>
- 
+
 </body>
 </html>
- 
