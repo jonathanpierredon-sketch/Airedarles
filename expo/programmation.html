@@ -1,827 +1,801 @@
+
+Claude a terminé la réponse.
+
+<!DOCTYPE html> <html lang="fr"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Programmation - L'Aire d'Arles</title> <style> /* BASE STYLES */ *, *::before, *::after { box-sizing: border-box;
+
+pasted
+
+gemini m'a fait une jolie page qui doit se traduire en anglais mais il n'as pas tout traduit et il galere à me le faire bien stp refait moi le code propre en entier de cette page afin que tout se traduise bien comme il faut
+
+22:52
+
+Reading frontend design skill
+Reading frontend design skill
+Le problème vient du pattern de traduction — avoir des <span class="fr"> et <span class="en"> partout rend le code ingérable. Je vais tout refaire avec un système propre basé sur data-fr / data-en et un JS centralisé.
+
+
+Fichier créé, lu un fichier
+Fichier créé, lu un fichier
+Voilà, code entièrement refait et propre. Le problème de Gemini était qu'il utilisait des <span class="fr"> et <span class="en"> doublés partout — ingérable, fragile, et facile à oublier.
+
+Le nouveau système : chaque élément traduit a simplement data-fr="..." et data-en="..." en attributs. Le JS fait un seul querySelectorAll('[data-fr]') et met à jour tous les textes d'un coup, sans exception possible. Impossible d'en oublier un.
+
+Ce qui est traduit maintenant :
+
+Header (titre, sous-titre, lien retour)
+Légende (tous les espaces)
+Tableau : en-têtes, jours, créneaux (Matin/Après-midi/Soirée), cartes événements, cellules "Disponible/Available"
+Timeline complète : titres de jours, horaires, tags d'espaces, titres et descriptions de chaque événement
+
+Programmation
+Code · HTML 
+oui ça marche mais dimanche on sera ouvert tu peux donc bien rajouter une ligne dans la grille pour marquer les créneaux disponible stp
+
+22:56
+
+3 fichiers modifiés, lu un fichier
+3 fichiers modifiés, lu un fichier
+Dimanche 12 juillet ajouté — 3 créneaux tous disponibles dans le tableau, et dans la timeline un bloc récapitulatif qui indique que tous les espaces sont libres à réserver, en FR et EN.
+
+
+Programmation
+Code · HTML 
+
+
+
+
+
+Claude est une IA et peut faire des erreurs. Veuillez vérifier les réponses.
+
+
+raw
+Programmation · HTML
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programmation - L'Aire d'Arles</title>
+    <title>Programmation — L'Aire d'Arles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <style>
-        /* BASE STYLES */
-        *, *::before, *::after {
-            box-sizing: border-box;
+        /* ======= RESET & BASE ======= */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+        :root {
+            --bg:       #080c14;
+            --bg2:      #0f1623;
+            --bg3:      #161d2d;
+            --border:   #1e2a3d;
+            --text:     #e8eaf0;
+            --muted:    #7a8aa0;
+            --accent:   #e8a020;
+            --immersive:#2563eb;
+            --rooftop:  #d45f1a;
+            --terrasse: #0f9060;
+            --etage2:   #7c3aed;
+            --dispo-bg: #0d1420;
+            --dispo-fg: #10b981;
+            --dispo-border: #1e3a2f;
         }
+ 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #0b0f19;
-            color: #f3f4f6;
-            margin: 0;
-            padding: 0;
-            line-height: 1.5;
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
         }
-
-        /* CONTAINER */
-        .container {
-            max-width: 1200px;
+ 
+        /* ======= LAYOUT ======= */
+        .page-wrap {
+            max-width: 1240px;
             margin: 0 auto;
-            padding: 40px 20px;
-            position: relative;
+            padding: 0 24px 80px;
         }
-
-        /* BOUTONS SÉLECTEUR DE LANGUE (EN HAUT À DROITE) */
-        .lang-switcher {
-            position: absolute;
-            top: 40px;
-            right: 20px;
+ 
+        /* ======= LANG SWITCHER ======= */
+        .topbar {
             display: flex;
-            gap: 10px;
-            z-index: 100;
+            justify-content: flex-end;
+            padding: 24px 0 0;
+        }
+        .lang-switcher {
+            display: flex;
+            gap: 8px;
         }
         .lang-btn {
-            background: #1f2937;
-            border: 1px solid #374151;
-            color: #9ca3af;
-            padding: 8px 14px;
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 7px 16px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.875rem;
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 6px;
-            transition: all 0.2s ease;
+            transition: all 0.2s;
         }
-        .lang-btn:hover {
-            border-color: #f59e0b;
-            color: #fff;
-        }
-        .lang-btn.active {
-            background: #f59e0b;
-            color: #000;
-            border-color: #f59e0b;
-        }
-
-        /* HEADER */
+        .lang-btn:hover { border-color: var(--accent); color: var(--text); }
+        .lang-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
+ 
+        /* ======= HEADER ======= */
         header {
             text-align: center;
+            padding: 50px 0 40px;
+            border-bottom: 1px solid var(--border);
             margin-bottom: 50px;
-            border-bottom: 1px solid #1f2937;
-            padding-bottom: 30px;
-            padding-top: 20px;
         }
         .wip-badge {
             display: inline-block;
-            background-color: #f59e0b;
+            background: var(--accent);
             color: #000;
-            font-size: 0.75rem;
-            font-weight: bold;
-            padding: 4px 12px;
-            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 15px;
+            padding: 4px 14px;
+            border-radius: 99px;
+            margin-bottom: 18px;
         }
         h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin: 0 0 10px 0;
-            letter-spacing: -0.025em;
-            color: #ffffff;
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 400;
+            color: #fff;
+            margin-bottom: 10px;
+            letter-spacing: -0.01em;
         }
         .subtitle {
-            font-size: 1.125rem;
-            color: #9ca3af;
-            max-width: 600px;
-            margin: 0 auto;
+            font-size: 1.05rem;
+            color: var(--muted);
+            max-width: 540px;
+            margin: 0 auto 22px;
         }
         .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            color: #3b82f6;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #4f8ef7;
             text-decoration: none;
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-        .back-link:hover {
-            color: #60a5fa;
-            text-decoration: underline;
-        }
-
-        /* LEGENDE ESPACES */
-        .legend {
-            background-color: #111827;
-            border: 1px solid #1f2937;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 40px;
-        }
-        .legend-title {
             font-size: 0.9rem;
-            font-weight: 600;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: #82b4ff; }
+ 
+        /* ======= LÉGENDE ======= */
+        .legend {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 22px 28px;
+            margin-bottom: 44px;
+        }
+        .legend-label {
+            font-size: 0.75rem;
+            font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #9ca3af;
-            margin-bottom: 12px;
+            letter-spacing: 0.1em;
+            color: var(--muted);
+            margin-bottom: 14px;
         }
         .legend-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px 28px;
         }
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
+            gap: 9px;
+            font-size: 0.875rem;
         }
-        .color-box {
-            width: 16px;
-            height: 16px;
-            border-radius: 4px;
+        .color-dot {
+            width: 12px; height: 12px;
+            border-radius: 3px;
             flex-shrink: 0;
         }
-
-        /* COULEURS DES ESPACES */
-        .bg-immersive { background-color: #2563eb; color: #ffffff; }
-        .bg-rooftop { background-color: #ea580c; color: #ffffff; }
-        .bg-terrasse { background-color: #059669; color: #ffffff; }
-        .bg-etage2 { background-color: #7c3aed; color: #ffffff; }
-        .bg-dispo { 
-            background-color: #1f2937; 
-            color: #10b981; 
-            border: 2px dashed #374151;
-            font-weight: 600;
-        }
-
-        /* TABLEAU DE PLANNING (DESKTOP) */
-        .table-container {
+        .dot-immersive { background: var(--immersive); }
+        .dot-rooftop   { background: var(--rooftop); }
+        .dot-terrasse  { background: var(--terrasse); }
+        .dot-etage2    { background: var(--etage2); }
+        .dot-dispo     { background: var(--dispo-bg); border: 1.5px dashed var(--dispo-fg); }
+ 
+        /* ======= TABLE (DESKTOP) ======= */
+        .table-wrap {
             overflow-x: auto;
-            background-color: #111827;
-            border: 1px solid #1f2937;
-            border-radius: 12px;
-            margin-bottom: 50px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            margin-bottom: 60px;
         }
         table {
             width: 100%;
+            min-width: 900px;
             border-collapse: collapse;
-            text-align: left;
-            min-width: 950px;
         }
-        th, td {
-            padding: 16px;
-            border-bottom: 1px solid #1f2937;
+        thead th {
+            background: var(--bg3);
+            color: var(--muted);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+        tbody td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border);
             vertical-align: top;
         }
-        th {
-            background-color: #1f2937;
-            color: #ffffff;
-            font-weight: 600;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+        tr.day-end td { border-bottom: 2px solid #2a3650; }
+        td.day-cell {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #fff;
+            white-space: nowrap;
+            min-width: 90px;
         }
-
-        /* CARDS ÉVÉNEMENTS */
-        .event-card {
+        td.slot-cell {
+            color: var(--muted);
+            font-size: 0.82rem;
+            white-space: nowrap;
+            min-width: 80px;
+        }
+ 
+        /* Event cards */
+        .ecard {
             padding: 10px 12px;
             border-radius: 8px;
-            font-size: 0.87rem;
-            height: 100%;
             min-height: 60px;
         }
-        .event-title {
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-        .event-desc {
-            font-size: 0.8rem;
-            opacity: 0.9;
-        }
-        .dispo-card {
+        .ecard-title { font-weight: 700; font-size: 0.85rem; margin-bottom: 3px; }
+        .ecard-desc  { font-size: 0.78rem; opacity: 0.88; }
+        .ecard-immersive { background: var(--immersive); color: #fff; }
+        .ecard-rooftop   { background: var(--rooftop);   color: #fff; }
+        .ecard-terrasse  { background: var(--terrasse);  color: #fff; }
+        .ecard-etage2    { background: var(--etage2);    color: #fff; }
+ 
+        .dispo-cell {
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 0.78rem;
-            height: 100%;
             min-height: 60px;
-            text-transform: uppercase;
-            letter-spacing: 0.02em;
-        }
-
-        /* TIMELINE JOUR PAR JOUR (MOBILE & LECTURE) */
-        .public-schedule {
-            margin-top: 60px;
-        }
-        .public-schedule h2 {
-            font-size: 1.75rem;
+            border-radius: 8px;
+            background: var(--dispo-bg);
+            border: 1.5px dashed var(--dispo-border);
+            color: var(--dispo-fg);
+            font-size: 0.75rem;
             font-weight: 700;
-            margin-bottom: 30px;
-            border-left: 4px solid #f59e0b;
-            padding-left: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
-        .day-section {
-            background-color: #111827;
-            border: 1px solid #1f2937;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 25px;
+ 
+        /* ======= TIMELINE (toujours visible) ======= */
+        .timeline-section { margin-top: 10px; }
+        .timeline-section > h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 32px;
+            border-left: 4px solid var(--accent);
+            padding-left: 14px;
+            color: #fff;
         }
-        .day-title {
+ 
+        .day-block {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 28px;
+            margin-bottom: 24px;
+        }
+        .day-block-title {
+            font-family: 'DM Serif Display', serif;
             font-size: 1.3rem;
-            font-weight: 700;
-            color: #ffffff;
-            margin-top: 0;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #1f2937;
-            padding-bottom: 10px;
+            font-weight: 400;
+            color: #fff;
+            margin-bottom: 22px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
         }
-        .day-timeline {
+        .events-list { display: flex; flex-direction: column; gap: 18px; }
+ 
+        .event-row {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
+            gap: 20px;
+            padding-left: 14px;
+            border-left: 2px solid var(--border);
         }
-        .timeline-item {
-            display: flex;
-            border-left: 2px solid #374151;
-            padding-left: 15px;
-            margin-left: 5px;
-        }
-        .timeline-time {
+        .event-time {
             font-weight: 700;
-            color: #f59e0b;
-            min-width: 100px;
+            color: var(--accent);
+            min-width: 110px;
             flex-shrink: 0;
+            padding-top: 2px;
+            font-size: 0.9rem;
         }
-        .timeline-content {
-            flex-grow: 1;
-        }
-        .space-tag {
-            display: inline-block;
-            font-size: 0.7rem;
+        .event-body { flex: 1; }
+        .event-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 7px; }
+        .tag {
+            font-size: 0.68rem;
             font-weight: 700;
             text-transform: uppercase;
-            padding: 2px 8px;
+            letter-spacing: 0.06em;
+            padding: 2px 9px;
             border-radius: 4px;
-            margin-bottom: 5px;
+            color: #fff;
         }
-
-        /* GESTION DU RESTRUCTURAGE PAR SCRIPT (FR CACHÉ PAR DÉFAUT SI EN) */
-      .en {
-    display: none;
-}
-
-        /* RESPONSIVE SMARTPHONES */
+        .tag-immersive { background: var(--immersive); }
+        .tag-rooftop   { background: var(--rooftop); }
+        .tag-terrasse  { background: var(--terrasse); }
+        .tag-etage2    { background: var(--etage2); }
+ 
+        .event-title {
+            font-weight: 700;
+            font-size: 0.98rem;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+        .event-desc { font-size: 0.87rem; color: var(--muted); }
+ 
+        /* ======= RESPONSIVE ======= */
         @media (max-width: 768px) {
-            .table-container {
-                display: none; /* On masque le gros tableau sur mobile pour garder la timeline propre */
-            }
-            h1 { font-size: 2rem; }
-            .lang-switcher {
-                position: relative;
-                top: 0;
-                right: 0;
-                justify-content: center;
-                margin-bottom: 20px;
-            }
+            .table-wrap { display: none; }
+            .topbar { justify-content: center; }
+            h1 { font-size: 1.9rem; }
         }
-		
-		/* RESPONSIVE SMARTPHONES */
-        @media (max-width: 768px) {
-            .table-container {
-                display: none; 
-            }
-            h1 { font-size: 2rem; }
-            .lang-switcher {
-                position: relative;
-                top: 0;
-                right: 0;
-                justify-content: center;
-                margin-bottom: 20px;
-            }
-        }
-
-        /* GESTION DES LANGUES (Ajoute-le juste ici) */
-        body.lang-fr .en { display: none !important; }
-        body.lang-en .fr { display: none !important; }
-
-    </style>
-</head>
     </style>
 </head>
 <body>
-
-    <div class="container">
-        
+ 
+<div class="page-wrap">
+ 
+    <!-- TOPBAR -->
+    <div class="topbar">
         <div class="lang-switcher">
-            <button class="lang-btn active" onclick="setLanguage('fr')">🇫🇷 FR</button>
-            <button class="lang-btn" onclick="setLanguage('en')">🇬🇧 EN</button>
+            <button class="lang-btn active" onclick="setLang('fr')">🇫🇷 FR</button>
+            <button class="lang-btn"        onclick="setLang('en')">🇬🇧 EN</button>
         </div>
-
-        <header>
-            <span class="wip-badge">Work in Progress</span>
-            <h1 class="fr">L'Aire d'Arles — Programmation</h1>
-            <h1 class="en">L'Aire d'Arles — Schedule</h1>
-            <p class="subtitle fr">Semaine d'ouverture des Rencontres de la Photographie 2026</p>
-            <p class="subtitle en">Opening Week of the Rencontres de la Photographie 2026</p>
-            <a href="index.html" class="back-link fr">&larr; Retour à la page principale</a>
-            <a href="index.html" class="back-link en">&larr; Back to main page</a>
-        </header>
-
-        <div class="legend">
-            <div class="legend-title fr">Lieux et Espaces de l'Aire</div>
-            <div class="legend-title en">Venues and Spaces of l'Aire</div>
-            <div class="legend-grid">
-                <div class="legend-item">
-                    <div class="color-box bg-immersive"></div>
-                    <span class="fr">Salle Immersive (1er étage)</span>
-                    <span class="en">Immersive Room (1st floor)</span>
-                </div>
-                <div class="legend-item">
-                    <div class="color-box bg-rooftop"></div>
-                    <span class="fr">Le Rooftop</span>
-                    <span class="en">The Rooftop</span>
-                </div>
-                <div class="legend-item">
-                    <div class="color-box bg-terrasse"></div>
-                    <span class="fr">Terrasse de la rue (En face)</span>
-                    <span class="en">Street Terrace (Opposite)</span>
-                </div>
-                <div class="legend-item">
-                    <div class="color-box bg-etage2"></div>
-                    <span class="fr">2ème Étage</span>
-                    <span class="en">2nd Floor</span>
-                </div>
-                <div class="legend-item">
-                    <div class="color-box bg-dispo" style="border: 1px dashed #10b981; height:14px; width:14px;"></div>
-                    <span class="fr">[ Créneau libre / À Réserver ]</span>
-                    <span class="en">[ Available Slot / To Book ]</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th class="fr">Jour</th><th class="en">Day</th>
-                        <th>Créneau</th>
-                        <th class="fr">Salle Immersive</th><th class="en">Immersive Room</th>
-                        <th>Rooftop</th>
-                        <th class="fr">Terrasse Rue (En face)</th><th class="en">Street Terrace (Opposite)</th>
-                        <th class="fr">2ème Étage</th><th class="en">2nd Floor</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td rowspan="3" style="font-weight: bold; border-bottom: 2px solid #374151;">
-                            <span class="fr">Lundi 6</span><span class="en">Monday 6</span>
-                        </td>
-                        <td>Matin</td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                    </tr>
-                    <tr>
-                        <td>Après-midi</td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                    </tr>
-                    <tr style="border-bottom: 2px solid #374151;">
-                        <td>Soir</td>
-                        <td>
-                            <div class="event-card bg-immersive">
-                                <div class="event-title">Galerie La Volante</div>
-                                <div class="event-desc"><span class="fr">Projection d'ouverture</span><span class="en">Opening projection</span></div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="event-card bg-rooftop">
-                                <div class="event-title">Galerie La Volante</div>
-                                <div class="event-desc"><span class="fr">Soirée d'ouverture</span><span class="en">Opening Party</span></div>
-                            </div>
-                        </td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                    </tr>
-
-                    <tr>
-                        <td rowspan="3" style="font-weight: bold; border-bottom: 2px solid #374151;">
-                            <span class="fr">Mardi 7</span><span class="en">Tuesday 7</span>
-                        </td>
-                        <td>Matin</td>
-                        <td>
-                            <div class="event-card bg-immersive">
-                                <div class="event-title">Collectif IANDE</div>
-                                <div class="event-desc"><span class="fr">Rochele Zandavalli (Brésil)</span><span class="en">Rochele Zandavalli (Brazil)</span></div>
-                            </div>
-                        </td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                    </tr>
-                    <tr>
-                        <td>Après-midi</td>
-                        <td>
-                            <div class="event-card bg-immersive">
-                                <div class="event-title">Collectif IANDE</div>
-                                <div class="event-desc"><span class="fr">Melissa Flores (Brésil)</span><span class="en">Melissa Flores (Brazil)</span></div>
-                            </div>
-                        </td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                    </tr>
-                    <tr style="border-bottom: 2px solid #374151;">
-                        <td>Soir</td>
-                        <td>
-                            <div class="event-card bg-immersive">
-                                <div class="event-title">Collectif IANDE</div>
-                                <div class="event-desc"><span class="fr">Isis Medeiros (Brésil)</span><span class="en">Isis Medeiros (Brazil)</span></div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="event-card bg-rooftop">
-                                <div class="event-title"><span class="fr">Soirée Brésilienne</span><span class="en">Brazilian Party</span></div>
-                                <div class="event-desc">Collectif IANDE</div>
-                            </div>
-                        </td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                    </tr>
-
-                    <tr>
-                        <td rowspan="3" style="font-weight: bold; border-bottom: 2px solid #374151;">
-                            <span class="fr">Mercredi 8</span><span class="en">Wednesday 8</span>
-                        </td>
-                        <td>Matin</td>
-                        <td>
-                            <div class="event-card bg-immersive">
-                                <div class="event-title">FOTOHOF</div>
-                                <div class="event-desc"><span class="fr">Projection (Autriche)</span><span class="en">Projection (Austria)</span></div>
-                            </div>
-                        </td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td>
-                            <div class="event-card bg-terrasse">
-                                <div class="event-title"><span class="fr">Petit-Déjeuner</span><span class="en">Breakfast</span></div>
-                                <div class="event-desc">With FOTOHOF</div>
-                            </div>
-                        </td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                    </tr>
-                    <tr>
-                        <td>Après-midi</td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td>
-                            <div class="event-card bg-terrasse">
-                                <div class="event-title">Agence Yume</div>
-                                <div class="event-desc"><span class="fr">Présentation d'Éditions</span><span class="en">Publications display</span></div>
-                            </div>
-                        </td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                    </tr>
-                    <tr style="border-bottom: 2px solid #374151;">
-                        <td>Soir</td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td>
-                            <div class="event-card bg-rooftop">
-                                <div class="event-title">Agence Yume</div>
-                                <div class="event-desc">Rooftop Party</div>
-                            </div>
-                        </td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                    </tr>
-
-                    <tr>
-                        <td rowspan="3" style="font-weight: bold; border-bottom: 2px solid #374151;">
-                            <span class="fr">Jeudi 9</span><span class="en">Thursday 9</span>
-                        </td>
-                        <td>Matin</td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td rowspan="3" style="vertical-align: middle;">
-                            <div class="event-card bg-etage2" style="height: calc(100% - 10px);">
-                                <div class="event-title">Future Photography</div>
-                                <div class="event-desc"><span class="fr">Conférences (Journée)</span><span class="en">Conferences (All day)</span></div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Après-midi</td>
-                        <td>
-                            <div class="event-card bg-immersive">
-                                <div class="event-title">Foto Editorial</div>
-                                <div class="event-desc"><span class="fr">Focus Brésil</span><span class="en">Brazil Focus</span></div>
-                            </div>
-                        </td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                    </tr>
-                    <tr style="border-bottom: 2px solid #374151;">
-                        <td>Soir</td>
-                        <td>
-                            <div class="event-card bg-immersive">
-                                <div class="event-title">AULIAK</div>
-                                <div class="event-desc">Matías Martínez</div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="event-card bg-rooftop">
-                                <div class="event-title">Future Photography</div>
-                                <div class="event-desc"><span class="fr">Soirée de clôture</span><span class="en">Closing Party</span></div>
-                            </div>
-                        </td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                    </tr>
-
-                    <tr>
-                        <td rowspan="3" style="font-weight: bold; border-bottom: 2px solid #374151;">
-                            <span class="fr">Vendredi 10</span><span class="en">Friday 10</span>
-                        </td>
-                        <td>Matin</td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                    </tr>
-                    <tr>
-                        <td>Après-midi</td>
-                        <td>
-                            <div class="event-card bg-immersive">
-                                <div class="event-title">Foto Editorial</div>
-                                <div class="event-desc"><span class="fr">Focus Brésil</span><span class="en">Brazil Focus</span></div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="event-card bg-rooftop">
-                                <div class="event-title">Prix Mentor</div>
-                                <div class="event-desc"><span class="fr">Célébration du Prix</span><span class="en">Award Celebration</span></div>
-                            </div>
-                        </td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                    </tr>
-                    <tr style="border-bottom: 2px solid #374151;">
-                        <td>Soir</td>
-                        <td>
-                            <div class="event-card bg-immersive">
-                                <div class="event-title">AULIAK</div>
-                                <div class="event-desc">Matías Martínez</div>
-                            </div>
-                        </td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                    </tr>
-
-                    <tr>
-                        <td rowspan="3" style="font-weight: bold;">
-                            <span class="fr">Samedi 11</span><span class="en">Saturday 11</span>
-                        </td>
-                        <td>Matin</td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                    </tr>
-                    <tr>
-                        <td>Après-midi</td>
-                        <td>
-                            <div class="event-card bg-immersive">
-                                <div class="event-title">AULIAK</div>
-                                <div class="event-desc">Matías Martínez</div>
-                            </div>
-                        </td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                    </tr>
-                    <tr>
-                        <td>Soir</td>
-                        <td>
-                            <div class="event-card bg-immersive">
-                                <div class="event-title">AULIAK</div>
-                                <div class="event-desc">Matías Martínez</div>
-                            </div>
-                        </td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                        <td><div class="dispo-card bg-dispo"><span class="fr">Disponible</span><span class="en">Available</span></div></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-
-        <div class="public-schedule">
-            <h2 class="fr">Détail de la Programmation & Jour par Jour</h2>
-            <h2 class="en">Program Details & Day by Day</h2>
-
-            <div class="day-section">
-                <div class="day-title"><span class="fr">Lundi 6 Juillet</span><span class="en">Monday, July 6th</span></div>
-                <div class="day-timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-time"><span class="fr">Soirée</span><span class="en">Evening</span></div>
-                        <div class="timeline-content">
-                            <span class="space-tag bg-immersive"><span class="fr">Salle Immersive</span><span class="en">Immersive Room</span></span>
-                            <span class="space-tag bg-rooftop">Rooftop</span>
-                            <strong style="color:#fff; display:block; margin-bottom:4px;">
-                                <span class="fr">Galerie La Volante — Ouverture du Bal</span>
-                                <span class="en">Galerie La Volante — Festivities Opener</span>
-                            </strong>
-                            <span class="fr">Projection exclusive dans la salle immersive au premier étage, suivie d'une soirée festive sur le Rooftop de l'Aire.</span>
-                            <span class="en">Exclusive screening in the first-floor immersive room, followed by a festive opening night on the Rooftop.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="day-section">
-                <div class="day-title"><span class="fr">Mardi 7 Juillet</span><span class="en">Tuesday, July 7th</span></div>
-                <div class="day-timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-time"><span class="fr">Matin</span><span class="en">Morning</span></div>
-                        <div class="timeline-content">
-                            <span class="space-tag bg-immersive"><span class="fr">Salle Immersive</span><span class="en">Immersive Room</span></span>
-                            <strong style="color:#fff; display:block; margin-bottom:4px;">Collectif IANDE — Rochele Zandavalli</strong>
-                            <span class="fr">Mise à l'honneur de la photographie brésilienne.</span>
-                            <span class="en">Spotlight on Brazilian contemporary photography.</span>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-time"><span class="fr">Après-midi</span><span class="en">Afternoon</span></div>
-                        <div class="timeline-content">
-                            <span class="space-tag bg-immersive"><span class="fr">Salle Immersive</span><span class="en">Immersive Room</span></span>
-                            <strong style="color:#fff; display:block; margin-bottom:4px;">Collectif IANDE — Melissa Flores</strong>
-                            <span class="fr">Suite de la programmation dédiée aux artistes du Brésil.</span>
-                            <span class="en">Continuation of the curated project highlighting Brazilian artists.</span>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-time"><span class="fr">Soirée</span><span class="en">Evening</span></div>
-                        <div class="timeline-content">
-                            <span class="space-tag bg-immersive"><span class="fr">Salle Immersive</span><span class="en">Immersive Room</span></span>
-                            <span class="space-tag bg-rooftop">Rooftop</span>
-                            <strong style="color:#fff; display:block; margin-bottom:4px;">
-                                <span class="fr">Collectif IANDE — Isis Medeiros & Soirée Brésilienne</span>
-                                <span class="en">Collectif IANDE — Isis Medeiros & Brazilian Party</span>
-                            </strong>
-                            <span class="fr">Dernière partie de la carte blanche, se prolongeant par une grande soirée thématique brésilienne sur le Rooftop.</span>
-                            <span class="en">Final part of the takeover, rolling into a full Brazilian vibrant night on the Rooftop.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="day-section">
-                <div class="day-title"><span class="fr">Mercredi 8 Juillet</span><span class="en">Wednesday, July 8th</span></div>
-                <div class="day-timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-time"><span class="fr">Matin</span><span class="en">Morning</span></div>
-                        <div class="timeline-content">
-                            <span class="space-tag bg-terrasse"><span class="fr">Terrasse Rue</span><span class="en">Street Terrace</span></span>
-                            <span class="space-tag bg-immersive"><span class="fr">Salle Immersive</span><span class="en">Immersive Room</span></span>
-                            <strong style="color:#fff; display:block; margin-bottom:4px;">
-                                <span class="fr">FOTOHOF (Autriche) — Petit-déjeuner & Projections</span>
-                                <span class="en">FOTOHOF (Austria) — Breakfast & Screenings</span>
-                            </strong>
-                            <span class="fr">Accueil petit-déjeuner sur la terrasse extérieure, suivi de projections dédiées au collectif autrichien dans la salle immersive.</span>
-                            <span class="en">Breakfast meetup on the outdoor street terrace, followed by special screenings from the Austrian collective in the immersive room.</span>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-time"><span class="fr">Après-midi</span><span class="en">Afternoon</span></div>
-                        <div class="timeline-content">
-                            <span class="space-tag bg-terrasse"><span class="fr">Terrasse Rue</span><span class="en">Street Terrace</span></span>
-                            <strong style="color:#fff; display:block; margin-bottom:4px;">Agence Yume — <span class="fr">Présentation d'Éditions</span><span class="en">Publishing Display</span></strong>
-                            <span class="fr">Présentation des publications et livres d'art de l'agence sur la terrasse extérieure.</span>
-                            <span class="en">Showcase of art books and prints releases by the agency on the open terrace.</span>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-time"><span class="fr">Soirée</span><span class="en">Evening</span></div>
-                        <div class="timeline-content">
-                            <span class="space-tag bg-rooftop">Rooftop</span>
-                            <strong style="color:#fff; display:block; margin-bottom:4px;">Agence Yume — Rooftop Party</strong>
-                            <span class="fr">Soirée festive et réseau sur le toit de l'Aire.</span>
-                            <span class="en">Network and party on the rooftop deck.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="day-section">
-                <div class="day-title"><span class="fr">Jeudi 9 Juillet</span><span class="en">Thursday, July 9th</span></div>
-                <div class="day-timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-time"><span class="fr">Journée</span><span class="en">All Day</span></div>
-                        <div class="timeline-content">
-                            <span class="space-tag bg-etage2"><span class="fr">2ème Étage</span><span class="en">2nd Floor</span></span>
-                            <strong style="color:#fff; display:block; margin-bottom:4px;">Future Photography — <span class="fr">Conférences</span><span class="en">Talks & Panels</span></strong>
-                            <span class="fr">Un cycle complet de conférences et tables rondes au deuxième étage, du matin jusqu'au soir.</span>
-                            <span class="en">Full series of keynote presentations and open debates on the second floor, from morning to evening.</span>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-time"><span class="fr">Après-midi</span><span class="en">Afternoon</span></div>
-                        <div class="timeline-content">
-                            <span class="space-tag bg-immersive"><span class="fr">Salle Immersive</span><span class="en">Immersive Room</span></span>
-                            <strong style="color:#fff; display:block; margin-bottom:4px;">Foto Editorial du Brésil</strong>
-                            <span class="fr">Session éditoriale et projections numériques immersives.</span>
-                            <span class="en">Editorial focus and immersive imagery projections.</span>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-time"><span class="fr">Soirée</span><span class="en">Evening</span></div>
-                        <div class="timeline-content">
-                            <span class="space-tag bg-immersive"><span class="fr">Salle Immersive</span><span class="en">Immersive Room</span></span>
-                            <span class="space-tag bg-rooftop">Rooftop</span>
-                            <strong style="color:#fff; display:block; margin-bottom:4px;">
-                                <span class="fr">AULIAK (Matías Martínez) & Clôture Future Photography</span>
-                                <span class="en">AULIAK (Matías Martínez) & Future Photography Closing</span>
-                            </strong>
-                            <span class="fr">Prise de possession de la salle immersive par Matías Martínez. En parallèle, soirée de clôture Future Photography sur le Rooftop.</span>
-                            <span class="en">Visual immersive experience by Matías Martínez. Simultaneously, Future Photography closing party takes place on the Rooftop.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="day-section">
-                <div class="day-title"><span class="fr">Vendredi 10 Juillet</span><span class="en">Friday, July 10th</span></div>
-                <div class="day-timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-time"><span class="fr">Après-midi</span><span class="en">Afternoon</span></div>
-                        <div class="timeline-content">
-                            <span class="space-tag bg-immersive"><span class="fr">Salle Immersive</span><span class="en">Immersive Room</span></span>
-                            <span class="space-tag bg-rooftop">Rooftop</span>
-                            <strong style="color:#fff; display:block; margin-bottom:4px;">
-                                <span class="fr">Foto Editorial du Brésil & Célébration Prix Mentor</span>
-                                <span class="en">Foto Editorial du Brésil & Prix Mentor Celebration</span>
-                            </strong>
-                            <span class="fr">Retour de Foto Editorial au 1er étage. Sur le Rooftop, l'équipe du Prix Mentor vient célébrer son lauréat autour d'un verre.</span>
-                            <span class="en">Return of Foto Editorial in the immersive room. On the Rooftop, the Prix Mentor crew gathers to toast their winner.</span>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-time"><span class="fr">Soirée</span><span class="en">Evening</span></div>
-                        <div class="timeline-content">
-                            <span class="space-tag bg-immersive"><span class="fr">Salle Immersive</span><span class="en">Immersive Room</span></span>
-                            <strong style="color:#fff; display:block; margin-bottom:4px;">AULIAK — Matías Martínez</strong>
-                            <span class="fr">Seconde soirée d'exposition et de performance visuelle immersive.</span>
-                            <span class="en">Second evening of exhibition and live deep digital landscape performance.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="day-section">
-                <div class="day-title"><span class="fr">Samedi 11 Juillet</span><span class="en">Saturday, July 11th</span></div>
-                <div class="day-timeline">
-                    <div class="timeline-item">
-                        <div class="timeline-time"><span class="fr">Après-midi & Soir</span><span class="en">Afternoon & Evening</span></div>
-                        <div class="timeline-content">
-                            <span class="space-tag bg-immersive"><span class="fr">Salle Immersive</span><span class="en">Immersive Room</span></span>
-                            <strong style="color:#fff; display:block; margin-bottom:4px;">AULIAK — Matías Martínez</strong>
-                            <span class="fr">Clôture de la semaine avec l'occupation complète de la salle immersive par l'artiste.</span>
-                            <span class="en">Closing of the dynamic week with full occupancy of the immersive room by the artist.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
     </div>
-
+ 
+    <!-- HEADER -->
+    <header>
+        <span class="wip-badge">Work in Progress</span>
+        <h1>L'Aire d'Arles</h1>
+        <p class="subtitle" data-fr="Programmation — Semaine d'ouverture des Rencontres de la Photographie 2026"
+                            data-en="Schedule — Opening Week of the Rencontres de la Photographie 2026"></p>
+        <a href="index.html" class="back-link">
+            <span>←</span>
+            <span data-fr="Retour à la page principale" data-en="Back to main page"></span>
+        </a>
+    </header>
+ 
+    <!-- LÉGENDE -->
+    <div class="legend">
+        <div class="legend-label" data-fr="Espaces de L'Aire" data-en="Venues & Spaces at L'Aire"></div>
+        <div class="legend-grid">
+            <div class="legend-item"><div class="color-dot dot-immersive"></div><span data-fr="Salle Immersive (1er étage)" data-en="Immersive Room (1st floor)"></span></div>
+            <div class="legend-item"><div class="color-dot dot-rooftop"></div><span data-fr="Le Rooftop" data-en="The Rooftop"></span></div>
+            <div class="legend-item"><div class="color-dot dot-terrasse"></div><span data-fr="Terrasse de la rue (en face)" data-en="Street Terrace (opposite)"></span></div>
+            <div class="legend-item"><div class="color-dot dot-etage2"></div><span data-fr="2ème Étage" data-en="2nd Floor"></span></div>
+            <div class="legend-item"><div class="color-dot dot-dispo"></div><span data-fr="Créneau libre / À réserver" data-en="Available slot / To book"></span></div>
+        </div>
+    </div>
+ 
+    <!-- ===================== TABLE DESKTOP ===================== -->
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th data-fr="Jour" data-en="Day"></th>
+                    <th data-fr="Créneau" data-en="Slot"></th>
+                    <th data-fr="Salle Immersive" data-en="Immersive Room"></th>
+                    <th>Rooftop</th>
+                    <th data-fr="Terrasse Rue" data-en="Street Terrace"></th>
+                    <th data-fr="2ème Étage" data-en="2nd Floor"></th>
+                </tr>
+            </thead>
+            <tbody>
+ 
+                <!-- LUNDI 6 -->
+                <tr>
+                    <td class="day-cell" rowspan="3" data-fr="Lundi 6" data-en="Monday 6"></td>
+                    <td class="slot-cell" data-fr="Matin" data-en="Morning"></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+                <tr>
+                    <td class="slot-cell" data-fr="Après-midi" data-en="Afternoon"></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+                <tr class="day-end">
+                    <td class="slot-cell" data-fr="Soirée" data-en="Evening"></td>
+                    <td><div class="ecard ecard-immersive"><div class="ecard-title">Galerie La Volante</div><div class="ecard-desc" data-fr="Projection d'ouverture" data-en="Opening projection"></div></div></td>
+                    <td><div class="ecard ecard-rooftop"><div class="ecard-title">Galerie La Volante</div><div class="ecard-desc" data-fr="Soirée d'ouverture" data-en="Opening Party"></div></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+ 
+                <!-- MARDI 7 -->
+                <tr>
+                    <td class="day-cell" rowspan="3" data-fr="Mardi 7" data-en="Tuesday 7"></td>
+                    <td class="slot-cell" data-fr="Matin" data-en="Morning"></td>
+                    <td><div class="ecard ecard-immersive"><div class="ecard-title">Collectif IANDE</div><div class="ecard-desc">Rochele Zandavalli (Brésil)</div></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+                <tr>
+                    <td class="slot-cell" data-fr="Après-midi" data-en="Afternoon"></td>
+                    <td><div class="ecard ecard-immersive"><div class="ecard-title">Collectif IANDE</div><div class="ecard-desc">Melissa Flores (Brésil)</div></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+                <tr class="day-end">
+                    <td class="slot-cell" data-fr="Soirée" data-en="Evening"></td>
+                    <td><div class="ecard ecard-immersive"><div class="ecard-title">Collectif IANDE</div><div class="ecard-desc">Isis Medeiros (Brésil)</div></div></td>
+                    <td><div class="ecard ecard-rooftop"><div class="ecard-title" data-fr="Soirée Brésilienne" data-en="Brazilian Party"></div><div class="ecard-desc">Collectif IANDE</div></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+ 
+                <!-- MERCREDI 8 -->
+                <tr>
+                    <td class="day-cell" rowspan="3" data-fr="Mercredi 8" data-en="Wednesday 8"></td>
+                    <td class="slot-cell" data-fr="Matin" data-en="Morning"></td>
+                    <td><div class="ecard ecard-immersive"><div class="ecard-title">FOTOHOF</div><div class="ecard-desc" data-fr="Projection (Autriche)" data-en="Projection (Austria)"></div></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="ecard ecard-terrasse"><div class="ecard-title" data-fr="Petit-Déjeuner" data-en="Breakfast"></div><div class="ecard-desc">With FOTOHOF</div></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+                <tr>
+                    <td class="slot-cell" data-fr="Après-midi" data-en="Afternoon"></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="ecard ecard-terrasse"><div class="ecard-title">Agence Yume</div><div class="ecard-desc" data-fr="Présentation d'Éditions" data-en="Publications display"></div></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+                <tr class="day-end">
+                    <td class="slot-cell" data-fr="Soirée" data-en="Evening"></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="ecard ecard-rooftop"><div class="ecard-title">Agence Yume</div><div class="ecard-desc">Rooftop Party</div></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+ 
+                <!-- JEUDI 9 -->
+                <tr>
+                    <td class="day-cell" rowspan="3" data-fr="Jeudi 9" data-en="Thursday 9"></td>
+                    <td class="slot-cell" data-fr="Matin" data-en="Morning"></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td rowspan="3" style="vertical-align:middle; padding:10px;">
+                        <div class="ecard ecard-etage2" style="height:100%; min-height:180px; display:flex; flex-direction:column; justify-content:center;">
+                            <div class="ecard-title">FUTURES Photography</div>
+                            <div class="ecard-desc" data-fr="Conférences — Journée complète" data-en="Talks & Panels — All Day"></div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="slot-cell" data-fr="Après-midi" data-en="Afternoon"></td>
+                    <td><div class="ecard ecard-immersive"><div class="ecard-title">Foto Editorial</div><div class="ecard-desc" data-fr="Focus Brésil" data-en="Brazil Focus"></div></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+                <tr class="day-end">
+                    <td class="slot-cell" data-fr="Soirée" data-en="Evening"></td>
+                    <td><div class="ecard ecard-immersive"><div class="ecard-title">AULIAK</div><div class="ecard-desc">Matías Martínez</div></div></td>
+                    <td><div class="ecard ecard-rooftop"><div class="ecard-title">FUTURES Photography</div><div class="ecard-desc" data-fr="Soirée de clôture" data-en="Closing Party"></div></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+ 
+                <!-- VENDREDI 10 -->
+                <tr>
+                    <td class="day-cell" rowspan="3" data-fr="Vendredi 10" data-en="Friday 10"></td>
+                    <td class="slot-cell" data-fr="Matin" data-en="Morning"></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+                <tr>
+                    <td class="slot-cell" data-fr="Après-midi" data-en="Afternoon"></td>
+                    <td><div class="ecard ecard-immersive"><div class="ecard-title">Foto Editorial</div><div class="ecard-desc" data-fr="Focus Brésil" data-en="Brazil Focus"></div></div></td>
+                    <td><div class="ecard ecard-rooftop"><div class="ecard-title">Prix Mentor</div><div class="ecard-desc" data-fr="Célébration du Prix" data-en="Award Celebration"></div></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+                <tr class="day-end">
+                    <td class="slot-cell" data-fr="Soirée" data-en="Evening"></td>
+                    <td><div class="ecard ecard-immersive"><div class="ecard-title">AULIAK</div><div class="ecard-desc">Matías Martínez</div></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+ 
+                <!-- SAMEDI 11 -->
+                <tr>
+                    <td class="day-cell" rowspan="3" data-fr="Samedi 11" data-en="Saturday 11"></td>
+                    <td class="slot-cell" data-fr="Matin" data-en="Morning"></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+                <tr>
+                    <td class="slot-cell" data-fr="Après-midi" data-en="Afternoon"></td>
+                    <td><div class="ecard ecard-immersive"><div class="ecard-title">AULIAK</div><div class="ecard-desc">Matías Martínez</div></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+                <tr>
+                    <td class="slot-cell" data-fr="Soirée" data-en="Evening"></td>
+                    <td><div class="ecard ecard-immersive"><div class="ecard-title">AULIAK</div><div class="ecard-desc">Matías Martínez</div></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+ 
+                <!-- DIMANCHE 12 -->
+                <tr>
+                    <td class="day-cell" rowspan="3" data-fr="Dimanche 12" data-en="Sunday 12"></td>
+                    <td class="slot-cell" data-fr="Matin" data-en="Morning"></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+                <tr>
+                    <td class="slot-cell" data-fr="Après-midi" data-en="Afternoon"></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+                <tr>
+                    <td class="slot-cell" data-fr="Soirée" data-en="Evening"></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
+                </tr>
+ 
+            </tbody>
+        </table>
+    </div>
+    <!-- ===================== FIN TABLE ===================== -->
+ 
+ 
+    <!-- ===================== TIMELINE DÉTAILLÉE ===================== -->
+    <div class="timeline-section">
+        <h2 data-fr="Détail Jour par Jour" data-en="Day-by-Day Programme"></h2>
+ 
+        <!-- LUNDI 6 -->
+        <div class="day-block">
+            <div class="day-block-title" data-fr="Lundi 6 Juillet" data-en="Monday, July 6th"></div>
+            <div class="events-list">
+                <div class="event-row">
+                    <div class="event-time" data-fr="Soirée" data-en="Evening"></div>
+                    <div class="event-body">
+                        <div class="event-tags">
+                            <span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span>
+                            <span class="tag tag-rooftop">Rooftop</span>
+                        </div>
+                        <div class="event-title" data-fr="Galerie La Volante — Ouverture du Bal" data-en="Galerie La Volante — Festivities Opener"></div>
+                        <div class="event-desc" data-fr="Projection exclusive dans la salle immersive au premier étage, suivie d'une soirée festive sur le Rooftop de l'Aire." data-en="Exclusive screening in the first-floor immersive room, followed by a festive opening night on the Rooftop."></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+        <!-- MARDI 7 -->
+        <div class="day-block">
+            <div class="day-block-title" data-fr="Mardi 7 Juillet" data-en="Tuesday, July 7th"></div>
+            <div class="events-list">
+                <div class="event-row">
+                    <div class="event-time" data-fr="Matin" data-en="Morning"></div>
+                    <div class="event-body">
+                        <div class="event-tags"><span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span></div>
+                        <div class="event-title">Collectif IANDE — Rochele Zandavalli</div>
+                        <div class="event-desc" data-fr="Mise à l'honneur de la photographie brésilienne contemporaine." data-en="Spotlight on contemporary Brazilian photography."></div>
+                    </div>
+                </div>
+                <div class="event-row">
+                    <div class="event-time" data-fr="Après-midi" data-en="Afternoon"></div>
+                    <div class="event-body">
+                        <div class="event-tags"><span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span></div>
+                        <div class="event-title">Collectif IANDE — Melissa Flores</div>
+                        <div class="event-desc" data-fr="Suite de la programmation dédiée aux artistes du Brésil." data-en="Continuation of the curated project highlighting Brazilian artists."></div>
+                    </div>
+                </div>
+                <div class="event-row">
+                    <div class="event-time" data-fr="Soirée" data-en="Evening"></div>
+                    <div class="event-body">
+                        <div class="event-tags">
+                            <span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span>
+                            <span class="tag tag-rooftop">Rooftop</span>
+                        </div>
+                        <div class="event-title" data-fr="Collectif IANDE — Isis Medeiros & Soirée Brésilienne" data-en="Collectif IANDE — Isis Medeiros & Brazilian Party"></div>
+                        <div class="event-desc" data-fr="Dernière partie de la carte blanche, se prolongeant par une grande soirée thématique brésilienne sur le Rooftop." data-en="Final part of the takeover, rolling into a vibrant Brazilian night on the Rooftop."></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+        <!-- MERCREDI 8 -->
+        <div class="day-block">
+            <div class="day-block-title" data-fr="Mercredi 8 Juillet" data-en="Wednesday, July 8th"></div>
+            <div class="events-list">
+                <div class="event-row">
+                    <div class="event-time" data-fr="Matin" data-en="Morning"></div>
+                    <div class="event-body">
+                        <div class="event-tags">
+                            <span class="tag tag-terrasse" data-fr="Terrasse Rue" data-en="Street Terrace"></span>
+                            <span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span>
+                        </div>
+                        <div class="event-title" data-fr="FOTOHOF (Autriche) — Petit-déjeuner & Projections" data-en="FOTOHOF (Austria) — Breakfast & Screenings"></div>
+                        <div class="event-desc" data-fr="Accueil petit-déjeuner sur la terrasse extérieure, suivi de projections dédiées au collectif autrichien dans la salle immersive." data-en="Breakfast meetup on the outdoor street terrace, followed by special screenings from the Austrian collective in the immersive room."></div>
+                    </div>
+                </div>
+                <div class="event-row">
+                    <div class="event-time" data-fr="Après-midi" data-en="Afternoon"></div>
+                    <div class="event-body">
+                        <div class="event-tags"><span class="tag tag-terrasse" data-fr="Terrasse Rue" data-en="Street Terrace"></span></div>
+                        <div class="event-title" data-fr="Agence Yume — Présentation d'Éditions" data-en="Agence Yume — Publishing Display"></div>
+                        <div class="event-desc" data-fr="Présentation des publications et livres d'art de l'agence sur la terrasse extérieure." data-en="Showcase of art books and print releases by the agency on the open terrace."></div>
+                    </div>
+                </div>
+                <div class="event-row">
+                    <div class="event-time" data-fr="Soirée" data-en="Evening"></div>
+                    <div class="event-body">
+                        <div class="event-tags"><span class="tag tag-rooftop">Rooftop</span></div>
+                        <div class="event-title">Agence Yume — Rooftop Party</div>
+                        <div class="event-desc" data-fr="Soirée festive et networking sur le toit de l'Aire." data-en="Festive networking party on the rooftop deck."></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+        <!-- JEUDI 9 -->
+        <div class="day-block">
+            <div class="day-block-title" data-fr="Jeudi 9 Juillet" data-en="Thursday, July 9th"></div>
+            <div class="events-list">
+                <div class="event-row">
+                    <div class="event-time" data-fr="Journée" data-en="All Day"></div>
+                    <div class="event-body">
+                        <div class="event-tags"><span class="tag tag-etage2" data-fr="2ème Étage" data-en="2nd Floor"></span></div>
+                        <div class="event-title" data-fr="FUTURES Photography — Conférences & Tables rondes" data-en="FUTURES Photography — Talks & Panel Discussions"></div>
+                        <div class="event-desc" data-fr="Un cycle complet de conférences et tables rondes au deuxième étage, du matin jusqu'au soir." data-en="Full series of keynote talks and open debates on the second floor, from morning to evening."></div>
+                    </div>
+                </div>
+                <div class="event-row">
+                    <div class="event-time" data-fr="Après-midi" data-en="Afternoon"></div>
+                    <div class="event-body">
+                        <div class="event-tags"><span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span></div>
+                        <div class="event-title" data-fr="Foto Editorial du Brésil — Focus Brésil" data-en="Foto Editorial — Brazil Focus"></div>
+                        <div class="event-desc" data-fr="Session éditoriale et projections numériques immersives." data-en="Editorial focus session with immersive digital projections."></div>
+                    </div>
+                </div>
+                <div class="event-row">
+                    <div class="event-time" data-fr="Soirée" data-en="Evening"></div>
+                    <div class="event-body">
+                        <div class="event-tags">
+                            <span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span>
+                            <span class="tag tag-rooftop">Rooftop</span>
+                        </div>
+                        <div class="event-title" data-fr="AULIAK (Matías Martínez) & Clôture FUTURES Photography" data-en="AULIAK (Matías Martínez) & FUTURES Photography Closing"></div>
+                        <div class="event-desc" data-fr="Prise de possession de la salle immersive par Matías Martínez. En parallèle, soirée de clôture FUTURES Photography sur le Rooftop." data-en="Visual immersive experience by Matías Martínez. Simultaneously, FUTURES Photography closing party on the Rooftop."></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+        <!-- VENDREDI 10 -->
+        <div class="day-block">
+            <div class="day-block-title" data-fr="Vendredi 10 Juillet" data-en="Friday, July 10th"></div>
+            <div class="events-list">
+                <div class="event-row">
+                    <div class="event-time" data-fr="Après-midi" data-en="Afternoon"></div>
+                    <div class="event-body">
+                        <div class="event-tags">
+                            <span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span>
+                            <span class="tag tag-rooftop">Rooftop</span>
+                        </div>
+                        <div class="event-title" data-fr="Foto Editorial du Brésil & Célébration Prix Mentor" data-en="Foto Editorial — Brazil Focus & Prix Mentor Celebration"></div>
+                        <div class="event-desc" data-fr="Retour de Foto Editorial à la salle immersive. Sur le Rooftop, l'équipe du Prix Mentor célèbre son lauréat." data-en="Foto Editorial returns to the immersive room. On the Rooftop, the Prix Mentor crew gathers to toast their winner."></div>
+                    </div>
+                </div>
+                <div class="event-row">
+                    <div class="event-time" data-fr="Soirée" data-en="Evening"></div>
+                    <div class="event-body">
+                        <div class="event-tags"><span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span></div>
+                        <div class="event-title">AULIAK — Matías Martínez</div>
+                        <div class="event-desc" data-fr="Seconde soirée d'exposition et de performance visuelle immersive." data-en="Second evening of exhibition and live immersive visual performance."></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+        <!-- SAMEDI 11 -->
+        <div class="day-block">
+            <div class="day-block-title" data-fr="Samedi 11 Juillet" data-en="Saturday, July 11th"></div>
+            <div class="events-list">
+                <div class="event-row">
+                    <div class="event-time" data-fr="Après-midi & Soirée" data-en="Afternoon & Evening"></div>
+                    <div class="event-body">
+                        <div class="event-tags"><span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span></div>
+                        <div class="event-title">AULIAK — Matías Martínez</div>
+                        <div class="event-desc" data-fr="Clôture de la semaine avec l'occupation complète de la salle immersive par l'artiste." data-en="Closing of the week with full occupancy of the immersive room by the artist."></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+        <!-- DIMANCHE 12 -->
+        <div class="day-block">
+            <div class="day-block-title" data-fr="Dimanche 12 Juillet" data-en="Sunday, July 12th"></div>
+            <div class="events-list">
+                <div class="event-row">
+                    <div class="event-time" data-fr="Toute la journée" data-en="All Day"></div>
+                    <div class="event-body">
+                        <div class="event-tags">
+                            <span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span>
+                            <span class="tag tag-rooftop">Rooftop</span>
+                            <span class="tag tag-terrasse" data-fr="Terrasse Rue" data-en="Street Terrace"></span>
+                            <span class="tag tag-etage2" data-fr="2ème Étage" data-en="2nd Floor"></span>
+                        </div>
+                        <div class="event-title" data-fr="Tous créneaux disponibles — À réserver" data-en="All slots available — To book"></div>
+                        <div class="event-desc" data-fr="L'Aire d'Arles est ouverte. Contactez-nous pour réserver un espace." data-en="L'Aire d'Arles is open. Contact us to book a space."></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+    </div>
+    <!-- ===================== FIN TIMELINE ===================== -->
+ 
+</div><!-- /page-wrap -->
+ 
 <script>
-    function setLanguage(lang) {
-        // Changement d'état actif sur les boutons
-        const buttons = document.querySelectorAll('.lang-btn');
-        buttons.forEach(btn => btn.classList.remove('active'));
-        
-        if(lang === 'fr') {
-            buttons[0].classList.add('active');
-            // On dit à la page qu'elle est en français
-            document.body.classList.remove('lang-en');
-            document.body.classList.add('lang-fr');
-        } else {
-            buttons[1].classList.add('active');
-            // On dit à la page qu'elle est en anglais
-            document.body.classList.remove('lang-fr');
-            document.body.classList.add('lang-en');
-        }
+    let currentLang = 'fr';
+ 
+    function setLang(lang) {
+        currentLang = lang;
+ 
+        // Mettre à jour les boutons
+        document.querySelectorAll('.lang-btn').forEach((btn, i) => {
+            btn.classList.toggle('active', (i === 0 && lang === 'fr') || (i === 1 && lang === 'en'));
+        });
+ 
+        // Mettre à jour tous les éléments avec data-fr / data-en
+        document.querySelectorAll('[data-fr]').forEach(el => {
+            const text = el.getAttribute('data-' + lang);
+            if (text !== null) el.textContent = text;
+        });
+ 
+        // Mettre à jour l'attribut lang de <html>
+        document.documentElement.lang = lang;
     }
-    
-    // Initialisation automatique au premier chargement
-    setLanguage('fr');
+ 
+    // Initialisation
+    setLang('fr');
 </script>
+ 
 </body>
 </html>
+ 
