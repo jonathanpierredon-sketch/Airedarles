@@ -595,23 +595,33 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
   <span class="lb-n lb-nx" id="lbN">›</span>
 </div>
 
-<section id="exposer">
+<section id="exposer" style="padding: 60px 0; background: #1a1a1a; color: #fff;">
   <div class="container">
-    <div class="exposer-inner">
-      <div class="exposer-txt rev">
-        <div class="trait"></div>
-        <p class="label">Appel à projet</p>
-        <h2 class="titre">L'Aire Immersive:<br><em>Votre Solo Show</em></h2>
-        <p class="corps">Votre expo sur 4 écrans de vidéoprojection dans une salle immersive dédiée.</p>
-        <div class="exposer-appel">
+    <div class="exposer-inner" style="display: flex; align-items: center; gap: 40px; flex-wrap: wrap;">
+      
+      <!-- Partie Texte (avec fond sombre pour contraster) -->
+      <div class="exposer-txt" style="flex: 1; min-width: 300px; background: rgba(0,0,0,0.3); padding: 30px; border-radius: 10px;">
+        <div class="trait" style="background: #e63946; height: 3px; width: 50px; margin-bottom: 15px;"></div>
+        <p class="label" style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8em; color: #ccc;">Appel à projet</p>
+        <h2 class="titre" style="font-size: 2.5em; margin: 10px 0;">L'Aire Immersive:<br><em style="color: #e63946;">Votre Solo Show</em></h2>
+        <p class="corps" style="font-size: 1.1em; line-height: 1.6; color: #eee;">Votre expo sur 4 écrans de vidéoprojection dans une salle immersive dédiée.</p>
+        
+        <div class="exposer-appel" style="margin-top: 20px;">
           <p><strong>📢 Appel à projet en cours</strong><br>Démarquez-vous en proposant une expérience révolutionnaire.</p>
-          <a href="https://expo.airedarles.fr" target="_blank" rel="noopener" class="btn btn-terre" style="display:inline-block; margin-top:10px">Déposer un projet ↗</a>
+          <a href="expo/index.html" class="btn" style="display:inline-block; padding: 15px 30px; background: #e63946; color: #fff; text-decoration: none; font-weight: bold; border-radius: 5px; margin-top: 10px;">Déposer un projet ↗</a>
         </div>
       </div>
-      <div class="exposer-visuel rev d2">
-        <div class="exposer-logo-txt">Exposer</div>
-        <a href="https://expo.airedarles.fr" target="_blank" rel="noopener" class="btn btn-out-b">Voir le site dédié ↗</a>
+
+      <!-- Partie Visuel -->
+      <div class="exposer-visuel" style="flex: 1; min-width: 300px; text-align: center;">
+        <div class="carrousel-container" style="height: 250px; border-radius: 10px; overflow: hidden; margin-bottom: 20px;">
+    <!-- Remplace 'photo1.jpg' par le vrai nom de ton image -->
+    <img src="expo/images/carroussel-concept/1.jpg" alt="Concept Immersif" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+        
+        <a href="expo/programmation.html" class="btn btn-out-b" style="display:inline-block; padding: 10px 20px; border: 2px solid #fff; color: #fff; text-decoration: none; border-radius: 5px;">Voir la programmation ↗</a>
       </div>
+      
     </div>
   </div>
 </section>
