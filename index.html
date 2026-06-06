@@ -388,8 +388,8 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
     <div class="agenda-i rev">
       <div class="trait"></div>
       <p class="label">Événements</p>
-      <h2 class="titre">Notre&nbsp; <em>Agenda</em></h2>
-      <p class="corps">Tous les vendredis : Dîner au Piano. Tous les samedis soirs : soirées&nbsp; dansante.&nbsp; Et aussi des expos et&nbsp; des rencontres.</p>
+      <h2 class="titre">Notre  <em>Agenda</em></h2>
+      <p class="corps">Tous les vendredis : Dîner au Piano. Tous les samedis soirs : soirées  dansante.  Et aussi des expos et  des rencontres.</p>
     </div>
     
     <div class="events">
@@ -433,19 +433,6 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
         </div>
       </div>
   
-      <div class="event rev d2" onclick="openAffiche('6juin.PNG')">
-        <div class="ev-affiche">
-          <img src="6juin.PNG" alt="Soirée SBK">
-          <div class="ev-affiche-zoom">🔍</div>
-        </div>
-        <div class="ev-info">
-          <div class="ev-date">Sam. 6 juin 2026</div>
-          <div class="ev-nom">Soirée SBK<br>Avec Joana</div>
-          <div class="ev-type">Avis à tous les passionnés de danse ! Initiation exclusive à la Salsa, Bachata et Kompa avec Joanna à partir de 20h00. Suivi d'une ambiance explosive.</div>
-          <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
-        </div>
-      </div>
-  
       <div class="event rev d2" onclick="openAffiche('9juin.jpg')">
         <div class="ev-affiche">
           <img src="9juin.jpg" alt="Rencontre Auteur">
@@ -468,6 +455,19 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
           <div class="ev-date">Mar. 9 juin 2026</div>
           <div class="ev-nom">Dîner-concert</div>
           <div class="ev-type">L'Aire d'Arles accueille un trio rare : Anthony Herbin, Julien Henriel et Thomas Pradier. Entre folk intime, pop indépendante et poésie électrique...</div>
+          <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
+        </div>
+      </div>
+
+      <div class="event rev d2" onclick="openAffiche('violetazul.jpg')">
+        <div class="ev-affiche">
+          <img src="violetazul.jpg" alt="Dîner-Concert Violetazul">
+          <div class="ev-affiche-zoom">🔍</div>
+        </div>
+        <div class="ev-info">
+          <div class="ev-date">Jeu. 11 juin 2026</div>
+          <div class="ev-nom">Dîner-Concert<br>Violetazul</div>
+          <div class="ev-type">À partir de 20h. Voyagez avec ses compositions entre tango et rythmes latino-américains. L'artiste est rémunérée au chapeau (merci de prévoir des espèces).</div>
           <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
         </div>
       </div>
@@ -607,7 +607,6 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
   <div class="container">
     <div class="exposer-inner" style="display: flex; align-items: center; gap: 40px; flex-wrap: wrap;">
       
-      <!-- Partie Texte (avec fond sombre pour contraster) -->
       <div class="exposer-txt" style="flex: 1; min-width: 300px; background: rgba(0,0,0,0.3); padding: 30px; border-radius: 10px;">
         <div class="trait" style="background: #e63946; height: 3px; width: 50px; margin-bottom: 15px;"></div>
         <p class="label" style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8em; color: #ccc;">Appel à projet</p>
@@ -620,10 +619,8 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
         </div>
       </div>
 
-      <!-- Partie Visuel -->
       <div class="exposer-visuel" style="flex: 1; min-width: 300px; text-align: center;">
         <div class="carrousel-container" style="height: 250px; border-radius: 10px; overflow: hidden; margin-bottom: 20px;">
-    <!-- Remplace 'photo1.jpg' par le vrai nom de ton image -->
     <img src="expo/images/carroussel-concept/1.jpg" alt="Concept Immersif" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
         
@@ -774,5 +771,3 @@ if(items.length > 0 && lbEl) {
 </script>
 </body>
 </html>
-
-```
