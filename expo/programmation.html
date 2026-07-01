@@ -3,768 +3,486 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programmation — L'Aire d'Arles</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <title>Agenda — L'Aire d'Arles</title>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
     <style>
         /* ======= RESET & BASE ======= */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        :root {
-            --bg:       #080c14;
-            --bg2:      #0f1623;
-            --bg3:      #161d2d;
-            --border:   #1e2a3d;
-            --text:     #e8eaf0;
-            --muted:    #7a8aa0;
-            --accent:   #e8a020;
-            --immersive:#2563eb;
-            --rooftop:  #d45f1a;
-            --terrasse: #0f9060;
-            --etage2:   #7c3aed;
-            --dispo-bg: #0d1420;
-            --dispo-fg: #10b981;
-            --dispo-border: #1e3a2f;
+        body { 
+            font-family: 'DM Sans', sans-serif; 
+            background-color: #ffffff; 
+            color: #000000; 
+            line-height: 1.4; 
+            padding: 20px 10px; 
         }
 
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
+        .page-wrap { 
+            max-width: 600px; 
+            margin: 0 auto; 
         }
-
-        /* ======= LAYOUT ======= */
-        .page-wrap {
-            max-width: 1240px;
-            margin: 0 auto;
-            padding: 0 24px 80px;
-        }
-
-        /* ======= LANG SWITCHER ======= */
-        .topbar {
-            display: flex;
-            justify-content: flex-end;
-            padding: 24px 0 0;
-        }
-        .lang-switcher {
-            display: flex;
-            gap: 8px;
-        }
-        .lang-btn {
-            background: var(--bg3);
-            border: 1px solid var(--border);
-            color: var(--muted);
-            padding: 7px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.875rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
-        }
-        .lang-btn:hover { border-color: var(--accent); color: var(--text); }
-        .lang-btn.active { background: var(--accent); color: #000; border-color: var(--accent); }
 
         /* ======= HEADER ======= */
-        header {
-            text-align: center;
-            padding: 50px 0 40px;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 50px;
+        header { text-align: center; margin-bottom: 30px; }
+        h1 { 
+            font-family: 'DM Sans', sans-serif; 
+            font-size: 1.5rem; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            letter-spacing: -0.02em; 
+            line-height: 1.1;
         }
-        .wip-badge {
-            display: inline-block;
-            background: var(--accent);
-            color: #000;
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            padding: 4px 14px;
-            border-radius: 99px;
-            margin-bottom: 18px;
-        }
-        h1 {
-            font-family: 'DM Serif Display', serif;
-            font-size: clamp(2rem, 5vw, 3rem);
-            font-weight: 400;
-            color: #fff;
-            margin-bottom: 10px;
-            letter-spacing: -0.01em;
-        }
-        .subtitle {
-            font-size: 1.05rem;
-            color: var(--muted);
-            max-width: 540px;
-            margin: 0 auto 22px;
-        }
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: #4f8ef7;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-        .back-link:hover { color: #82b4ff; }
 
         /* ======= LÉGENDE ======= */
-        .legend {
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 22px 28px;
-            margin-bottom: 44px;
-        }
-        .legend-label {
-            font-size: 0.75rem;
+        .legend { 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            gap: 15px; 
+            margin-bottom: 40px; 
+            font-size: 0.85rem; 
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--muted);
-            margin-bottom: 14px;
         }
-        .legend-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px 28px;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            font-size: 0.875rem;
-        }
-        .color-dot {
-            width: 12px; height: 12px;
-            border-radius: 3px;
-            flex-shrink: 0;
-        }
-        .dot-immersive { background: var(--immersive); }
-        .dot-rooftop   { background: var(--rooftop); }
-        .dot-terrasse  { background: var(--terrasse); }
-        .dot-etage2    { background: var(--etage2); }
-        .dot-dispo     { background: var(--dispo-bg); border: 1.5px dashed var(--dispo-fg); }
+        .leg-item { display: flex; align-items: center; gap: 6px; }
+        .color-dot { width: 14px; height: 14px; border-radius: 50%; border: 1px solid #000; }
 
-        /* ======= TABLE (DESKTOP) ======= */
-        .table-wrap {
-            overflow-x: auto;
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            margin-bottom: 60px;
-        }
-        table {
-            width: 100%;
-            min-width: 900px;
-            border-collapse: collapse;
-        }
-        thead th {
-            background: var(--bg3);
-            color: var(--muted);
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.09em;
-            text-transform: uppercase;
-            padding: 14px 16px;
-            border-bottom: 1px solid var(--border);
-            white-space: nowrap;
-        }
-        tbody td {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--border);
-            vertical-align: top;
-        }
-        tr.day-end td { border-bottom: 2px solid #2a3650; }
-        td.day-cell {
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: #fff;
-            white-space: nowrap;
-            min-width: 90px;
-        }
-        td.slot-cell {
-            color: var(--muted);
-            font-size: 0.82rem;
-            white-space: nowrap;
-            min-width: 80px;
+        /* Couleurs des lieux (reprises de ton PDF) */
+        .dot-immersive { background: #2563eb; } /* Bleu */
+        .dot-rooftop   { background: #d45f1a; } /* Orange */
+        .dot-terrasse  { background: #0f9060; } /* Vert */
+        .dot-etage2    { background: #ffe600; } /* Jaune */
+
+        /* ======= TIMELINE ======= */
+        .timeline {
+            position: relative;
+            padding-left: 60px; /* Espace pour la ligne et la date */
+            margin-bottom: 50px;
         }
 
-        /* Event cards */
-        .ecard {
-            padding: 10px 12px;
-            border-radius: 8px;
-            min-height: 60px;
-        }
-        .ecard-title { font-weight: 700; font-size: 0.85rem; margin-bottom: 3px; }
-        .ecard-desc  { font-size: 0.78rem; opacity: 0.88; }
-        .ecard-immersive { background: var(--immersive); color: #fff; }
-        .ecard-rooftop   { background: var(--rooftop);   color: #fff; }
-        .ecard-terrasse  { background: var(--terrasse);  color: #fff; }
-        .ecard-etage2    { background: var(--etage2);    color: #fff; }
-
-        .dispo-cell {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            min-height: 60px;
-            border-radius: 8px;
-            background: var(--dispo-bg);
-            border: 1.5px dashed var(--dispo-border);
-            color: var(--dispo-fg);
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        /* ======= TIMELINE (toujours visible) ======= */
-        .timeline-section { margin-top: 10px; }
-        .timeline-section > h2 {
-            font-family: 'DM Serif Display', serif;
-            font-size: 1.8rem;
-            font-weight: 400;
-            margin-bottom: 32px;
-            border-left: 4px solid var(--accent);
-            padding-left: 14px;
-            color: #fff;
+        /* La ligne verticale continue */
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            bottom: 0;
+            left: 26px; /* Centré sur le point */
+            width: 2px;
+            background-color: #000;
         }
 
         .day-block {
-            background: var(--bg2);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 28px;
-            margin-bottom: 24px;
+            position: relative;
+            margin-bottom: 40px;
         }
-        .day-block-title {
-            font-family: 'DM Serif Display', serif;
-            font-size: 1.3rem;
-            font-weight: 400;
-            color: #fff;
-            margin-bottom: 22px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border);
-        }
-        .events-list { display: flex; flex-direction: column; gap: 18px; }
 
-        .event-row {
+        /* Bloc Date */
+        .date-icon {
+            position: absolute;
+            left: -60px;
+            top: -5px;
+            width: 40px;
+            height: 40px;
             display: flex;
-            gap: 20px;
-            padding-left: 14px;
-            border-left: 2px solid var(--border);
+            align-items: center;
+            justify-content: center;
+            background-image: url('calendar.jpg'); /* Ton icône calendrier */
+            background-size: cover;
+            background-position: center;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: #000;
+            padding-top: 8px; /* Ajustement pour centrer le texte dans ton icone */
         }
-        .event-time {
-            font-weight: 700;
-            color: var(--accent);
-            min-width: 110px;
-            flex-shrink: 0;
-            padding-top: 2px;
-            font-size: 0.9rem;
-        }
-        .event-body { flex: 1; }
-        .event-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 7px; }
-        .tag {
-            font-size: 0.68rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            padding: 2px 9px;
-            border-radius: 4px;
-            color: #fff;
-        }
-        .tag-immersive { background: var(--immersive); }
-        .tag-rooftop   { background: var(--rooftop); }
-        .tag-terrasse  { background: var(--terrasse); }
-        .tag-etage2    { background: var(--etage2); }
 
-        .event-title {
-            font-weight: 700;
-            font-size: 0.98rem;
-            color: #fff;
-            margin-bottom: 4px;
+        /* Événements */
+        .event-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding-left: 10px;
         }
-        .event-desc { font-size: 0.87rem; color: var(--muted); }
 
-        /* ======= RESPONSIVE ======= */
-        @media (max-width: 768px) {
-            .table-wrap { display: none; }
-            .topbar { justify-content: center; }
-            h1 { font-size: 1.9rem; }
+        /* Le point sur la timeline */
+        .event-dot {
+            position: absolute;
+            left: -40px; /* Aligné sur la ligne verticale */
+            top: 4px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 2px solid #000;
+            z-index: 2;
         }
+
+        /* L'en-tête de l'événement (Drapeau + Icône + Titre) */
+        .event-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-weight: 800;
+            font-size: 1rem;
+            line-height: 1.2;
+        }
+
+        .event-icons {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 2px;
+        }
+
+        .flag-icon { width: 20px; height: 14px; object-fit: cover; border: 1px solid #ccc; border-radius: 2px; }
+        .action-icon { width: 18px; height: 18px; object-fit: contain; }
+
+        /* Description intégrée sous le titre */
+        .event-desc {
+            margin-top: 6px;
+            font-size: 0.85rem;
+            color: #333;
+            font-weight: 400;
+            padding-left: 52px; /* Aligné avec le texte du titre */
+        }
+
+        /* ======= FOOTER ======= */
+        footer {
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #000;
+        }
+
     </style>
 </head>
 <body>
 
 <div class="page-wrap">
 
-    <!-- TOPBAR -->
-    <div class="topbar">
-        <div class="lang-switcher">
-            <button class="lang-btn active" onclick="setLang('fr')">🇫🇷 FR</button>
-            <button class="lang-btn"        onclick="setLang('en')">🇬🇧 EN</button>
-        </div>
-    </div>
-
     <!-- HEADER -->
     <header>
-        <span class="wip-badge">Work in Progress</span>
-        <h1>L'Aire d'Arles</h1>
-        <p class="subtitle" data-fr="Programmation — Semaine d'ouverture des Rencontres de la Photographie 2026"
-                            data-en="Schedule — Opening Week of the Rencontres de la Photographie 2026"></p>
-        <a href="index.html" class="back-link">
-            <span>←</span>
-            <span data-fr="Retour à la page principale" data-en="Back to main page"></span>
-        </a>
+        <h1>L'Aire d'Arles<br>Agenda des<br>rendez-vous &<br>expositions<br>immersives</h1>
     </header>
 
     <!-- LÉGENDE -->
     <div class="legend">
-        <div class="legend-label" data-fr="Espaces de L'Aire" data-en="Venues & Spaces at L'Aire"></div>
-        <div class="legend-grid">
-            <div class="legend-item"><div class="color-dot dot-immersive"></div><span data-fr="Salle Immersive (1er étage)" data-en="Immersive Room (1st floor)"></span></div>
-            <div class="legend-item"><div class="color-dot dot-rooftop"></div><span data-fr="Le Rooftop" data-en="The Rooftop"></span></div>
-            <div class="legend-item"><div class="color-dot dot-terrasse"></div><span data-fr="Terrasse de la rue (en face)" data-en="Street Terrace (opposite)"></span></div>
-            <div class="legend-item"><div class="color-dot dot-etage2"></div><span data-fr="2ème Étage" data-en="2nd Floor"></span></div>
-            <div class="legend-item"><div class="color-dot dot-dispo"></div><span data-fr="Créneau libre / À réserver" data-en="Available slot / To book"></span></div>
-        </div>
+        <div class="leg-item"><div class="color-dot dot-immersive"></div> Immersive Room</div>
+        <div class="leg-item"><div class="color-dot dot-rooftop"></div> Rooftop</div>
+        <div class="leg-item"><div class="color-dot dot-terrasse"></div> Terrace</div>
+        <div class="leg-item"><div class="color-dot dot-etage2"></div> 2nd Floor</div>
     </div>
 
-    <!-- ===================== TABLE DESKTOP ===================== -->
-    <div class="table-wrap">
-        <table>
-            <thead>
-                <tr>
-                    <th data-fr="Jour" data-en="Day"></th>
-                    <th data-fr="Créneau" data-en="Slot"></th>
-                    <th data-fr="Salle Immersive" data-en="Immersive Room"></th>
-                    <th>Rooftop</th>
-                    <th data-fr="Terrasse Rue" data-en="Street Terrace"></th>
-                    <th data-fr="2ème Étage" data-en="2nd Floor"></th>
-                </tr>
-            </thead>
-            <tbody>
-
-                <!-- LUNDI 6 -->
-                <tr>
-                    <td class="day-cell" rowspan="3" data-fr="Lundi 6" data-en="Monday 6"></td>
-                    <td class="slot-cell" data-fr="Matin" data-en="Morning"></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-                <tr>
-                    <td class="slot-cell" data-fr="Après-midi" data-en="Afternoon"></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-                <tr class="day-end">
-                    <td class="slot-cell" data-fr="Soirée" data-en="Evening"></td>
-                    <td><div class="ecard ecard-immersive"><div class="ecard-title">Galerie La Volante</div><div class="ecard-desc" data-fr="Projection d'ouverture" data-en="Opening projection"></div></div></td>
-                    <td><div class="ecard ecard-rooftop"><div class="ecard-title">Galerie La Volante</div><div class="ecard-desc" data-fr="Soirée privée" data-en="Private Party">Soirée privée</div></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-
-                <!-- MARDI 7 -->
-                <tr>
-                    <td class="day-cell" rowspan="3" data-fr="Mardi 7" data-en="Tuesday 7"></td>
-                    <td class="slot-cell" data-fr="Matin" data-en="Morning"></td>
-                    <td><div class="ecard ecard-immersive"><div class="ecard-title">Collectif IANDE</div><div class="ecard-desc">Rochele Zandavalli (Brésil)</div></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-                <tr>
-                    <td class="slot-cell" data-fr="Après-midi" data-en="Afternoon"></td>
-                    <td><div class="ecard ecard-immersive"><div class="ecard-title">Collectif IANDE</div><div class="ecard-desc">Melissa Flores (Brésil)</div></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-                <tr class="day-end">
-                    <td class="slot-cell" data-fr="Soirée" data-en="Evening"></td>
-                    <td><div class="ecard ecard-immersive"><div class="ecard-title">Collectif IANDE</div><div class="ecard-desc">Luciana Petrelli (Brésil)</div></div></td>
-                    <td><div class="ecard ecard-rooftop"><div class="ecard-title" data-fr="Soirée Brésilienne" data-en="Brazilian Party"></div><div class="ecard-desc">Collectif IANDE</div></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-
-                <!-- MERCREDI 8 -->
-                <tr>
-                    <td class="day-cell" rowspan="3" data-fr="Mercredi 8" data-en="Wednesday 8"></td>
-                    <td class="slot-cell" data-fr="Matin" data-en="Morning"></td>
-                    <td><div class="ecard ecard-immersive"><div class="ecard-title">FOTOHOF</div><div class="ecard-desc" data-fr="Projection en coop. avec P.IN.E.A Periodical" data-en="Screening in coop. with P.IN.E.A Periodical"></div></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="ecard ecard-terrasse"><div class="ecard-title" data-fr="Petit-Déjeuner" data-en="Breakfast"></div><div class="ecard-desc">w/ FOTOHOF & P.IN.E.A</div></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-                <tr>
-                    <td class="slot-cell" data-fr="Après-midi" data-en="Afternoon"></td>
-                    <td><div class="ecard ecard-immersive"><div class="ecard-title">Joséphine Vallé</div><div class="ecard-desc" data-fr="Exposition" data-en="Exhibition"></div></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="ecard ecard-terrasse"><div class="ecard-title">Éditions de La Petite Semaine</div><div class="ecard-desc" data-fr="Signature de livres" data-en="Book signing"></div></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-                <tr class="day-end">
-                    <td class="slot-cell" data-fr="Soirée" data-en="Evening"></td>
-                    <td><div class="ecard ecard-immersive"><div class="ecard-title">Joséphine Vallé</div><div class="ecard-desc" data-fr="Exposition" data-en="Exhibition"></div></div></td>
-                    <td><div class="ecard ecard-rooftop"><div class="ecard-title">Yume represent</div><div class="ecard-desc">Rooftop Party</div></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-
-                <!-- JEUDI 9 -->
-                <tr>
-                    <td class="day-cell" rowspan="3" data-fr="Jeudi 9" data-en="Thursday 9"></td>
-                    <td class="slot-cell" data-fr="Matin" data-en="Morning"></td>
-                    <td><div class="ecard ecard-immersive"><div class="ecard-title">Collectif IANDE</div><div class="ecard-desc">Patricia Moribe (Brésil)</div></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td rowspan="3" style="vertical-align:middle; padding:10px;">
-                        <div class="ecard ecard-etage2" style="height:100%; min-height:180px; display:flex; flex-direction:column; justify-content:center;">
-                            <div class="ecard-title" style="font-size:0.8rem;">FUTURES – The European Photography Platform</div>
-                            <div class="ecard-desc" data-fr="Conférences et présentations toute la journée" data-en="Talks and presentations throughout the day">10:00–12:00 - FUTURES Platform Meeting (only for FUTURES members)   15:00–16:30  - FUTURES presentation 16:30–17:15&nbsp; - Foto Colectania and Photo Arsenal Wien presentations 17:30–18:00&nbsp; - Organ Vida book presentation (with copies available to browse and purchase) 18:00–19:00 - FOTODOK presentation From 19:00 onwards - Gathering with artists / Party.</div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="slot-cell" data-fr="Après-midi" data-en="Afternoon"></td>
-                    <td><div class="ecard ecard-immersive"><div class="ecard-title">Foto Editorial</div><div class="ecard-desc" data-fr="Focus Brésil" data-en="Brazil Focus"></div></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-                <tr class="day-end">
-                    <td class="slot-cell" data-fr="Soirée" data-en="Evening"></td>
-                    <td><div class="ecard ecard-immersive"><div class="ecard-title">AULIAK</div><div class="ecard-desc">Matías Martínez</div></div></td>
-                    <td><div class="ecard ecard-rooftop"><div class="ecard-title" style="font-size:0.75rem;">FUTURES – The European Photography Platform</div><div class="ecard-desc" data-fr="Soirée de clôture" data-en="Closing Party"></div></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-
-                <!-- VENDREDI 10 -->
-                <tr>
-                    <td class="day-cell" rowspan="3" data-fr="Vendredi 10" data-en="Friday 10"></td>
-                    <td class="slot-cell" data-fr="Matin" data-en="Morning"></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-                <tr>
-                    <td class="slot-cell" data-fr="Après-midi" data-en="Afternoon"></td>
-                    <td><div class="ecard ecard-immersive"><div class="ecard-title">Foto Editorial</div><div class="ecard-desc" data-fr="Focus Brésil" data-en="Brazil Focus"></div></div></td>
-                    <td><div class="ecard ecard-rooftop"><div class="ecard-title">Prix Mentor</div><div class="ecard-desc" data-fr="Célébration du Prix" data-en="Award Celebration"></div></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-                <tr class="day-end">
-                    <td class="slot-cell" data-fr="Soirée" data-en="Evening"></td>
-                    <td><div class="ecard ecard-immersive"><div class="ecard-title">AULIAK</div><div class="ecard-desc">Matías Martínez</div></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-
-                <!-- SAMEDI 11 -->
-                <tr>
-                    <td class="day-cell" rowspan="3" data-fr="Samedi 11" data-en="Saturday 11"></td>
-                    <td class="slot-cell" data-fr="Matin" data-en="Morning"></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-                <tr>
-                    <td class="slot-cell" data-fr="Après-midi" data-en="Afternoon"></td>
-                    <td><div class="ecard ecard-immersive"><div class="ecard-title">AULIAK</div><div class="ecard-desc">Matías Martínez</div></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-                <tr>
-                    <td class="slot-cell" data-fr="Soirée" data-en="Evening"></td>
-                    <td><div class="ecard ecard-immersive"><div class="ecard-title">AULIAK</div><div class="ecard-desc">Matías Martínez</div></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-
-                <!-- DIMANCHE 12 -->
-                <tr>
-                    <td class="day-cell" rowspan="3" data-fr="Dimanche 12" data-en="Sunday 12"></td>
-                    <td class="slot-cell" data-fr="Matin" data-en="Morning"></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-                <tr>
-                    <td class="slot-cell" data-fr="Après-midi" data-en="Afternoon"></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-                <tr>
-                    <td class="slot-cell" data-fr="Soirée" data-en="Evening"></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                    <td><div class="dispo-cell" data-fr="Disponible" data-en="Available"></div></td>
-                </tr>
-
-            </tbody>
-        </table>
-    </div>
-    <!-- ===================== FIN TABLE ===================== -->
-
-
-    <!-- ===================== TIMELINE DÉTAILLÉE ===================== -->
-    <div class="timeline-section">
-        <h2 data-fr="Détail Jour par Jour" data-en="Day-by-Day Programme"></h2>
+    <!-- TIMELINE -->
+    <div class="timeline">
 
         <!-- LUNDI 6 -->
         <div class="day-block">
-            <div class="day-block-title" data-fr="Lundi 6 Juillet" data-en="Monday, July 6th"></div>
-            <div class="events-list">
-                <div class="event-row">
-                    <div class="event-time" data-fr="Soirée" data-en="Evening"></div>
-                    <div class="event-body">
-                        <div class="event-tags">
-                            <span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span>
-                            <span class="tag tag-rooftop">Rooftop</span>
-                        </div>
-                        <div class="event-title" data-fr="Galerie La Volante — Ouverture du Bal" data-en="Galerie La Volante">Galerie La Volante</div>
-                        <div class="event-desc" data-fr="Projection exclusive dans la salle immersive au premier étage, suivie d'une soirée festive sur le Rooftop de l'Aire." data-en="Exclusive screening in the first-floor immersive room, followed by a private party on the Rooftop.">Projection exclusive dans la salle immersive au premier étage, suivie d'une soirée privée sur le Rooftop de l'Aire.</div>
+            <div class="date-icon">6</div>
+            
+            <div class="event-item">
+                <div class="event-dot dot-immersive"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="fr flag.jpg" class="flag-icon" alt="FR">
+                        <img src="camera.jpg" class="action-icon" alt="Photo">
                     </div>
+                    <div>Les Arlésiennes</div>
+                </div>
+                <div class="event-desc">
+                    Série de portraits d'arlésiennes en costume traditionnel, une série de Jonathan Pierredon pour mettre à l'honneur la culture locale. (Matin & Après-midi)
+                </div>
+            </div>
+
+            <div class="event-item">
+                <div class="event-dot dot-immersive"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="fr flag.jpg" class="flag-icon" alt="FR">
+                        <img src="camera.jpg" class="action-icon" alt="Photo">
+                    </div>
+                    <div>La volante</div>
+                </div>
+                <div class="event-desc">
+                    Projection exclusive dans la salle immersive au premier étage.
+                </div>
+            </div>
+
+            <div class="event-item">
+                <div class="event-dot dot-rooftop"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="champagne glasses.jpg" class="action-icon" alt="Party" style="margin-left: 26px;">
+                    </div>
+                    <div>Private Party</div>
                 </div>
             </div>
         </div>
 
         <!-- MARDI 7 -->
         <div class="day-block">
-            <div class="day-block-title" data-fr="Mardi 7 Juillet" data-en="Tuesday, July 7th"></div>
-            <div class="events-list">
-                <div class="event-row">
-                    <div class="event-time" data-fr="Matin" data-en="Morning"></div>
-                    <div class="event-body">
-                        <div class="event-tags"><span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span></div>
-                        <div class="event-title">Collectif IANDE — Rochele Zandavalli</div>
-                        <div class="event-desc" data-fr="Mise à l'honneur de la photographie brésilienne contemporaine." data-en="Spotlight on contemporary Brazilian photography."></div>
+            <div class="date-icon">7</div>
+            
+            <div class="event-item">
+                <div class="event-dot dot-immersive"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="brazil flag .jpg" class="flag-icon" alt="BR">
+                        <img src="camera.jpg" class="action-icon" alt="Photo">
                     </div>
+                    <div>IANDE presents:<br><span style="font-weight:400; font-size:0.9rem;">Rochelle Zandavalli<br>Melissa Flores<br>Luciana Petrelli</span></div>
                 </div>
-                <div class="event-row">
-                    <div class="event-time" data-fr="Après-midi" data-en="Afternoon"></div>
-                    <div class="event-body">
-                        <div class="event-tags"><span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span></div>
-                        <div class="event-title">Collectif IANDE — Melissa Flores</div>
-                        <div class="event-desc" data-fr="Suite de la programmation dédiée aux artistes du Brésil." data-en="Continuation of the curated project highlighting Brazilian artists."></div>
+            </div>
+
+            <div class="event-item">
+                <div class="event-dot dot-rooftop"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="brazil flag .jpg" class="flag-icon" alt="BR">
+                        <img src="champagne glasses.jpg" class="action-icon" alt="Party">
                     </div>
+                    <div>IANDE Grand<br>Opening Party</div>
                 </div>
-                <div class="event-row">
-                    <div class="event-time" data-fr="Soirée" data-en="Evening"></div>
-                    <div class="event-body">
-                        <div class="event-tags">
-                            <span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span>
-                            <span class="tag tag-rooftop">Rooftop</span>
-                        </div>
-                        <div class="event-title" data-fr="Collectif IANDE — Isis Medeiros & Soirée Brésilienne" data-en="Collectif IANDE — Isis Medeiros & Brazilian Party"></div>
-                        <div class="event-desc" data-fr="Dernière partie de la carte blanche, se prolongeant par une grande soirée thématique brésilienne sur le Rooftop." data-en="Final part of the takeover, rolling into a vibrant Brazilian night on the Rooftop."></div>
-                    </div>
+                <div class="event-desc">
+                    Mise à l'honneur de la photographie brésilienne contemporaine se prolongeant par une grande soirée thématique.
                 </div>
             </div>
         </div>
 
         <!-- MERCREDI 8 -->
         <div class="day-block">
-            <div class="day-block-title" data-fr="Mercredi 8 Juillet" data-en="Wednesday, July 8th"></div>
-            <div class="events-list">
-                <div class="event-row">
-                    <div class="event-time" data-fr="Matin" data-en="Morning"></div>
-                    <div class="event-body">
-                        <div class="event-tags">
-                            <span class="tag tag-terrasse" data-fr="Terrasse Rue" data-en="Street Terrace"></span>
-                            <span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span>
-                        </div>
-                        <div class="event-title" data-fr="FOTOHOF & P.IN.E.A Periodical (Autriche) — Petit-déjeuner & Projections" data-en="FOTOHOF & P.IN.E.A Periodical (Austria) — Breakfast & Screenings"></div>
-                        <div class="event-desc" data-fr="Accueil petit-déjeuner sur la terrasse extérieure, suivi de projections dans la salle immersive, en coopération avec P.IN.E.A Periodical." data-en="Breakfast meetup on the outdoor street terrace, followed by special screenings in the immersive room, in cooperation with P.IN.E.A Periodical."></div>
+            <div class="date-icon">8</div>
+            
+            <div class="event-item">
+                <div class="event-dot dot-terrasse"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="austrian flag.jpg" class="flag-icon" alt="AT">
+                        <img src="croissant.jpg" class="action-icon" alt="Breakfast">
                     </div>
+                    <div>Breakfast with<br>FOTOHOF &<br>P.IN.E.A periodical</div>
                 </div>
-                
-                <div class="event-row">
-                    <div class="event-time" data-fr="Après-midi" data-en="Afternoon"></div>
-                    <div class="event-body">
-                        <div class="event-tags"><span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span></div>
-                        <div class="event-title">Joséphine Vallé</div>
-                        <div class="event-desc" data-fr="Exposition dans la salle immersive." data-en="Exhibition in the immersive room."></div>
-                    </div>
-                </div>
+            </div>
 
-                <div class="event-row">
-                    <div class="event-time" data-fr="Après-midi" data-en="Afternoon"></div>
-                    <div class="event-body">
-                        <div class="event-tags"><span class="tag tag-terrasse" data-fr="Terrasse Rue" data-en="Street Terrace"></span></div>
-                        <div class="event-title" data-fr="Éditions de La Petite Semaine — Signature de livres" data-en="Éditions de La Petite Semaine — Book signing"></div>
-                        <div class="event-desc" data-fr="Rencontre et signature de livres avec les éditions de La Petite Semaine sur la terrasse extérieure." data-en="Meet and greet book signing with Éditions de La Petite Semaine on the open terrace."></div>
+            <div class="event-item">
+                <div class="event-dot dot-immersive"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="austrian flag.jpg" class="flag-icon" alt="AT">
+                        <img src="camera.jpg" class="action-icon" alt="Photo">
                     </div>
+                    <div>FOTOHOF</div>
                 </div>
-
-                <div class="event-row">
-                    <div class="event-time" data-fr="Soirée" data-en="Evening"></div>
-                    <div class="event-body">
-                        <div class="event-tags"><span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span></div>
-                        <div class="event-title">Joséphine Vallé</div>
-                        <div class="event-desc" data-fr="Exposition dans la salle immersive." data-en="Exhibition in the immersive room."></div>
-                    </div>
+                <div class="event-desc">
+                    Projections dans la salle immersive.
                 </div>
+            </div>
 
-                <div class="event-row">
-                    <div class="event-time" data-fr="Soirée" data-en="Evening"></div>
-                    <div class="event-body">
-                        <div class="event-tags"><span class="tag tag-rooftop">Rooftop</span></div>
-                        <div class="event-title">Yume represent — Rooftop Party</div>
-                        <div class="event-desc" data-fr="Soirée festive et networking sur le toit de l'Aire." data-en="Festive networking party on the rooftop deck."></div>
+            <div class="event-item">
+                <div class="event-dot dot-terrasse"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="fr flag.jpg" class="flag-icon" alt="FR">
+                        <img src="pen.jpg" class="action-icon" alt="Sign">
                     </div>
+                    <div>Éditions de la<br>Petite Semaine<br>Book signing</div>
+                </div>
+            </div>
+
+            <div class="event-item">
+                <div class="event-dot dot-immersive"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="fr flag.jpg" class="flag-icon" alt="FR">
+                        <img src="camera.jpg" class="action-icon" alt="Photo">
+                        <img src="clap.jpg" class="action-icon" alt="Clap">
+                    </div>
+                    <div>Joséphine<br>Vallé Franceschi</div>
+                </div>
+            </div>
+
+            <div class="event-item">
+                <div class="event-dot dot-rooftop"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="fr flag.jpg" class="flag-icon" alt="FR">
+                        <img src="champagne glasses.jpg" class="action-icon" alt="Party">
+                    </div>
+                    <div>YUME represent<br>Party</div>
                 </div>
             </div>
         </div>
 
         <!-- JEUDI 9 -->
         <div class="day-block">
-            <div class="day-block-title" data-fr="Jeudi 9 Juillet" data-en="Thursday, July 9th"></div>
-            <div class="events-list">
-                <div class="event-row">
-                    <div class="event-time" data-fr="Journée" data-en="All Day"></div>
-                    <div class="event-body">
-                        <div class="event-tags"><span class="tag tag-etage2" data-fr="2ème Étage" data-en="2nd Floor"></span></div>
-                        <div class="event-title">FUTURES – The European Photography Platform</div>
-                        <div class="event-desc" data-fr="Conférences et présentations tout au long de la journée au deuxième étage." data-en="Talks and presentations throughout the day on the second floor."></div>
+            <div class="date-icon">9</div>
+            
+            <div class="event-item">
+                <div class="event-dot dot-etage2"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="eu flag.jpg" class="flag-icon" alt="EU">
+                        <img src="micro.jpg" class="action-icon" alt="Micro">
                     </div>
+                    <div>FUTURES<br><span style="font-weight:400; font-size:0.85rem;">The European<br>Photography platform</span></div>
                 </div>
-                <div class="event-row">
-                    <div class="event-time" data-fr="Après-midi" data-en="Afternoon"></div>
-                    <div class="event-body">
-                        <div class="event-tags"><span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span></div>
-                        <div class="event-title" data-fr="Foto Editorial du Brésil — Focus Brésil" data-en="Foto Editorial — Brazil">Foto Editorial&nbsp; Brésil</div>
-                        <div class="event-desc" data-fr="Session éditoriale et projections numériques immersives." data-en="Editorial focus session with immersive digital projections."></div>
-                    </div>
+                <div class="event-desc">
+                    10:00–12:00 - Platform Meeting (members only)<br>
+                    15:00–16:30 - FUTURES presentation<br>
+                    16:30–17:15 - Foto Colectania & Photo Arsenal Wien<br>
+                    17:30–18:00 - Organ Vida book presentation<br>
+                    18:00–19:00 - FOTODOK presentation
                 </div>
-                <div class="event-row">
-                    <div class="event-time" data-fr="Soirée" data-en="Evening"></div>
-                    <div class="event-body">
-                        <div class="event-tags">
-                            <span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span>
-                            <span class="tag tag-rooftop">Rooftop</span>
-                        </div>
-                        <div class="event-title" data-fr="AULIAK (Matías Martínez) & Clôture FUTURES" data-en="AULIAK (Matías Martínez from Barcelona) & FUTURES Closing">AULIAK (Matías Martínez) &amp; Clôture FUTURES</div>
-                        <div class="event-desc" data-fr="Prise de possession de la salle immersive par Matías Martínez. En parallèle, soirée de clôture de la plateforme FUTURES sur le Rooftop." data-en="Visual immersive experience by Matías Martínez. Simultaneously, FUTURES closing party on the Rooftop."></div>
+            </div>
+
+            <div class="event-item">
+                <div class="event-dot dot-immersive"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="brazil flag .jpg" class="flag-icon" alt="BR">
+                        <img src="camera.jpg" class="action-icon" alt="Photo">
                     </div>
+                    <div>IANDE presents:<br>Patricia Moribe</div>
+                </div>
+            </div>
+
+            <div class="event-item">
+                <div class="event-dot dot-immersive"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="spanish flag.jpg" class="flag-icon" alt="ES">
+                        <img src="camera.jpg" class="action-icon" alt="Photo">
+                    </div>
+                    <div>AULIAK Universe<br><span style="font-weight:400; font-size:0.75rem;">Photography · Performance · Film</span></div>
+                </div>
+                <div class="event-desc">
+                    Prise de possession de la salle immersive par Matías Martínez.
+                </div>
+            </div>
+
+            <div class="event-item">
+                <div class="event-dot dot-immersive"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="brazil flag .jpg" class="flag-icon" alt="BR">
+                        <img src="camera.jpg" class="action-icon" alt="Photo">
+                    </div>
+                    <div>Fotô Editorial<br><span style="font-weight:400; font-size:0.75rem;">La maison d'édition brésilienne</span></div>
+                </div>
+            </div>
+
+            <div class="event-item">
+                <div class="event-dot dot-rooftop"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="eu flag.jpg" class="flag-icon" alt="EU">
+                        <img src="champagne glasses.jpg" class="action-icon" alt="Party">
+                    </div>
+                    <div>FUTURES: Let's Party!</div>
                 </div>
             </div>
         </div>
 
         <!-- VENDREDI 10 -->
         <div class="day-block">
-            <div class="day-block-title" data-fr="Vendredi 10 Juillet" data-en="Friday, July 10th"></div>
-            <div class="events-list">
-                <div class="event-row">
-                    <div class="event-time" data-fr="Après-midi" data-en="Afternoon"></div>
-                    <div class="event-body">
-                        <div class="event-tags">
-                            <span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span>
-                            <span class="tag tag-rooftop">Rooftop</span>
-                        </div>
-                        <div class="event-title" data-fr="Foto Editorial du Brésil & Célébration Prix Mentor" data-en="Foto Editorial — Brazil Focus & Prix Mentor Celebration"></div>
-                        <div class="event-desc" data-fr="Retour de Foto Editorial à la salle immersive. Sur le Rooftop, l'équipe du Prix Mentor célèbre son lauréat." data-en="Foto Editorial returns to the immersive room. On the Rooftop, the Prix Mentor crew gathers to toast their winner."></div>
+            <div class="date-icon">10</div>
+
+            <div class="event-item">
+                <div class="event-dot dot-immersive"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="fr flag.jpg" class="flag-icon" alt="FR">
+                        <img src="camera.jpg" class="action-icon" alt="Photo">
                     </div>
+                    <div>Les Arlésiennes</div>
                 </div>
-                <div class="event-row">
-                    <div class="event-time" data-fr="Soirée" data-en="Evening"></div>
-                    <div class="event-body">
-                        <div class="event-tags"><span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span></div>
-                        <div class="event-title">AULIAK — Matías Martínez</div>
-                        <div class="event-desc" data-fr="Seconde soirée d'exposition et de performance visuelle immersive." data-en="Second evening of exhibition and live immersive visual performance."></div>
+                 <div class="event-desc">
+                    Série de portraits d'arlésiennes en costume traditionnel par Jonathan Pierredon. (Matin)
+                </div>
+            </div>
+            
+            <div class="event-item">
+                <div class="event-dot dot-immersive"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="brazil flag .jpg" class="flag-icon" alt="BR">
+                        <img src="camera.jpg" class="action-icon" alt="Photo">
                     </div>
+                    <div>Fotô Editorial<br><span style="font-weight:400; font-size:0.75rem;">La maison d'édition brésilienne</span></div>
+                </div>
+            </div>
+
+            <div class="event-item">
+                <div class="event-dot dot-immersive"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="spanish flag.jpg" class="flag-icon" alt="ES">
+                        <img src="camera.jpg" class="action-icon" alt="Photo">
+                    </div>
+                    <div>AULIAK Experience<br><span style="font-weight:400; font-size:0.75rem;">Photography · Become · Film</span></div>
+                </div>
+                <div class="event-desc">
+                    Small participatory action inspired by the AULIAK universe. Create a simple set consisting of an armchair and a garment rack. Visitors can put on costumes, sit, and take part in a short photo session. Faces will remain hidden. Results projected at night in the street.
+                </div>
+            </div>
+
+            <div class="event-item">
+                <div class="event-dot dot-terrasse"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="fr flag.jpg" class="flag-icon" alt="FR">
+                        <img src="champagne glasses.jpg" class="action-icon" alt="Party">
+                    </div>
+                    <div>Apéro Prix Mentor</div>
                 </div>
             </div>
         </div>
 
         <!-- SAMEDI 11 -->
         <div class="day-block">
-            <div class="day-block-title" data-fr="Samedi 11 Juillet" data-en="Saturday, July 11th"></div>
-            <div class="events-list">
-                <div class="event-row">
-                    <div class="event-time" data-fr="Après-midi & Soirée" data-en="Afternoon & Evening"></div>
-                    <div class="event-body">
-                        <div class="event-tags"><span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span></div>
-                        <div class="event-title">AULIAK — Matías Martínez</div>
-                        <div class="event-desc" data-fr="Clôture de la semaine avec l'occupation complète de la salle immersive par l'artiste." data-en="Closing of the week with full occupancy of the immersive room by the artist."></div>
+            <div class="date-icon">11</div>
+            
+            <div class="event-item">
+                <div class="event-dot dot-immersive"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="spanish flag.jpg" class="flag-icon" alt="ES">
+                        <img src="camera.jpg" class="action-icon" alt="Photo">
                     </div>
+                    <div>AULIAK Convergence</div>
+                </div>
+                <div class="event-desc">
+                     (Matin) Small participatory action. Visitors can put on costumes, sit in an armchair, and take part in a short photo session. Faces will remain hidden. Results projected at night in the street.
                 </div>
             </div>
         </div>
 
         <!-- DIMANCHE 12 -->
         <div class="day-block">
-            <div class="day-block-title" data-fr="Dimanche 12 Juillet" data-en="Sunday, July 12th"></div>
-            <div class="events-list">
-                <div class="event-row">
-                    <div class="event-time" data-fr="Toute la journée" data-en="All Day"></div>
-                    <div class="event-body">
-                        <div class="event-tags">
-                            <span class="tag tag-immersive" data-fr="Salle Immersive" data-en="Immersive Room"></span>
-                            <span class="tag tag-rooftop">Rooftop</span>
-                            <span class="tag tag-terrasse" data-fr="Terrasse Rue" data-en="Street Terrace"></span>
-                            <span class="tag tag-etage2" data-fr="2ème Étage" data-en="2nd Floor"></span>
-                        </div>
-                        <div class="event-title" data-fr="Tous créneaux disponibles — À réserver" data-en="All slots available — To book"></div>
-                        <div class="event-desc" data-fr="L'Aire d'Arles est ouverte. Contactez-nous pour réserver un espace." data-en="L'Aire d'Arles is open. Contact us to book a space."></div>
+            <div class="date-icon">12</div>
+            
+            <div class="event-item">
+                <div class="event-dot dot-immersive"></div>
+                <div class="event-header">
+                    <div class="event-icons">
+                        <img src="fr flag.jpg" class="flag-icon" alt="FR">
+                        <img src="camera.jpg" class="action-icon" alt="Photo">
                     </div>
+                    <div>Les Arlésiennes</div>
+                </div>
+                <div class="event-desc">
+                    Série de portraits d'arlésiennes en costume traditionnel par Jonathan Pierredon. (Toute la journée)
                 </div>
             </div>
         </div>
 
     </div>
-    <!-- ===================== FIN TIMELINE ===================== -->
 
-</div><!-- /page-wrap -->
+    <!-- FOOTER -->
+    <footer>
+        INSTALLATION VIDÉO RÉALISÉ PAR iDza
+    </footer>
 
-<script>
-    let currentLang = 'fr';
-
-    function setLang(lang) {
-        currentLang = lang;
-
-        // Mettre à jour les boutons
-        document.querySelectorAll('.lang-btn').forEach((btn, i) => {
-            btn.classList.toggle('active', (i === 0 && lang === 'fr') || (i === 1 && lang === 'en'));
-        });
-
-        // Mettre à jour tous les éléments avec data-fr / data-en
-        document.querySelectorAll('[data-fr]').forEach(el => {
-            const text = el.getAttribute('data-' + lang);
-            if (text !== null) el.textContent = text;
-        });
-
-        // Mettre à jour l'attribut lang de <html>
-        document.documentElement.lang = lang;
-    }
-
-    // Initialisation
-    setLang('fr');
-</script>
+</div>
 
 </body>
 </html>
-
-```

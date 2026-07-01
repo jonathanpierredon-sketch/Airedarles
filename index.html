@@ -1,3 +1,6 @@
+Toutes mes excuses, vous avez tout à fait raison. Voici le code **complet et intact** de votre page, dans lequel j'ai uniquement appliqué vos modifications précises sur la section Agenda, la programmation, l'exposition des Arlésiennes et la suppression de la section "Exposer".
+
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -119,7 +122,7 @@ section{padding:96px 0}
 .h-h{font-family:'Playfair Display',serif;font-size:0.9rem;color:var(--encre)}
 .h-f .h-h{color:var(--gris-clair);text-decoration:line-through;font-style:italic}
 
-/* ---- AGENDA (CORRIGÉ POUR GRILLE STABLE) ---- */
+/* ---- AGENDA ---- */
 #agenda{background:var(--blanc)}
 .agenda-i{max-width:500px;margin-bottom:48px}
 .events{display:grid;grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));gap:24px;margin-bottom:36px}
@@ -177,18 +180,6 @@ section{padding:96px 0}
 .lb-n{position:absolute;top:50%;transform:translateY(-50%);font-size:2.4rem;color:rgba(255,255,255,0.45);cursor:pointer;padding:16px;transition:color 0.2s;user-select:none}
 .lb-n:hover{color:#fff}
 .lb-p{left:6px}.lb-nx{right:6px}
-
-/* ---- EXPOSER ---- */
-#exposer{background:var(--encre);padding:80px 0}
-.exposer-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-.exposer-txt .titre{color:#fff}
-.exposer-txt .titre em{color:var(--ocre-p)}
-.exposer-txt .corps{color:rgba(255,255,255,0.7)}
-.exposer-appel{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);padding:32px;border-radius:2px;margin-top:28px}
-.exposer-appel p{font-size:0.88rem;color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:20px}
-.exposer-appel strong{color:rgba(255,255,255,0.9);font-weight:400}
-.exposer-visuel{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;text-align:center}
-.exposer-logo-txt{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,5vw,4rem);font-style:italic;color:rgba(255,255,255,0.08);letter-spacing:0.15em}
 
 /* ---- CONTACT ---- */
 #contact{background:var(--creme);border-top:1px solid var(--gris-clair)}
@@ -258,7 +249,7 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
   .container{padding:0 24px}
   section{padding:68px 0}
   
-  .laire-g, .resto-g, .pro-hdr, .contact-g, .exposer-inner{grid-template-columns:1fr;gap:36px}
+  .laire-g, .resto-g, .pro-hdr, .contact-g{grid-template-columns:1fr;gap:36px}
   .pro-offres{grid-template-columns:1fr}
   .events{grid-template-columns:1fr}
   .galerie{grid-template-columns:repeat(2,1fr)}
@@ -285,7 +276,6 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
     <li><a href="#restaurant">Restaurant</a></li>
     <li><a href="#agenda">Agenda</a></li>
     <li><a href="#pro">Pro</a></li>
-    <li><a href="#exposer">Exposer</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="nav-burger" id="burger"><span></span><span></span><span></span></div>
@@ -392,87 +382,8 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
       <p class="corps">Tous les vendredis : Dîner au Piano. Tous les samedis soirs : soirées  dansante.  Et aussi des expos et  des rencontres.</p>
     </div>
     
-<div class="events">
-
-      <div class="event rev" onclick="openAffiche('agenda-piano-vendredi.jpg')">
-        <div class="ev-affiche">
-          <img src="agenda-piano-vendredi.jpg" alt="Dîner au Piano">
-          <div class="ev-affiche-zoom">🔍</div>
-        </div>
-        <div class="ev-info">
-          <div class="ev-date">Tous les vendredis</div>
-          <div class="ev-nom">Dîner au Piano<br>avec Joaquina Cavatorta</div>
-          <div class="ev-type">Chaque vendredi à partir de 19h30, Joaquina Cavatorta vous accompagne en live tout au long du dîner. Un univers musical unique, fait de compositions personnelles...</div>
-          <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
-        </div>
-      </div>
-
-      <div class="event rev d2" onclick="openAffiche('foot.jpeg')">
-        <div class="ev-affiche">
-          <img src="foot.jpeg" alt="Coupe du Monde - Équipe de France">
-          <div class="ev-affiche-zoom">🔍</div>
-        </div>
-        <div class="ev-info">
-          <div class="ev-date">16, 22 et 26 juin 2026</div>
-          <div class="ev-nom">Coupe du Monde<br>Tous avec les Bleus !</div>
-          <div class="ev-type">🇫🇷 La Coupe du Monde se vit mieux ensemble !<br><br>⚽️ Retrouvez-nous pour encourager l’Équipe de France et suivre en direct tous les matchs des Bleus dans une ambiance festive, conviviale et musicale.<br><br>🎉 Entre amis, en famille ou entre supporters, venez partager l’émotion de chaque rencontre !<br><br>🍽️ Réservez votre table dès à présent pour ne rien manquer !!</div>
-          <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
-        </div>
-      </div>
-
-      <div class="event rev d2" onclick="openAffiche('misskenza.jpg')">
-        <div class="ev-affiche">
-          <img src="misskenza.jpg" alt="Dîner-Concert Miss Kenza & Les Gentlemen">
-          <div class="ev-affiche-zoom">🔍</div>
-        </div>
-        <div class="ev-info">
-          <div class="ev-date">Sam. 20 juin 2026</div>
-          <div class="ev-nom">Dîner-Concert<br>Miss Kenza</div>
-          <div class="ev-type">🎵 LIVE MUSIC • SAMEDI 20 JUIN À 20H 🎵 Retrouvez Miss Kenza & Les Gentlemen pour une soirée 100% Rhythm & Blues, Soul & Funk ! Pensez à réserver votre table.</div>
-          <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
-        </div>
-      </div>
-
-      <div class="event rev d2" onclick="openAffiche('21Juin.jpg')">
-        <div class="ev-affiche">
-          <img src="21Juin.jpg" alt="Fête de la Musique — Karaoké Géant">
-          <div class="ev-affiche-zoom">🔍</div>
-        </div>
-        <div class="ev-info">
-          <div class="ev-date">Dim. 21 juin 2026</div>
-          <div class="ev-nom">Fête de la Musique<br>Karaoké sur Écran Géant</div>
-          <div class="ev-type">🎤 FÊTE DE LA MUSIQUE ! Le dimanche 21 juin, retrouvez le fameux duo Laz et venez chanter vos morceaux préférés en plein air sur notre écran géant !</div>
-          <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
-        </div>
-      </div>
-  
-       <div class="event rev d2" onclick="openAffiche('ON27juin.jpg')">
-        <div class="ev-affiche">
-          <img src="ON27juin.jpg" alt="Les rendez vous du ON">
-          <div class="ev-affiche-zoom">🔍</div>
-        </div>
-        <div class="ev-info">
-          <div class="ev-date">Sam. 27 juin 2026</div>
-          <div class="ev-nom">Les rendez-vous du ON<br>Inauguration</div>
-          <div class="ev-type">Début des rendez-vous et des vernissages avec les artistes durant toute la semaine photographique du parcours ON du lundi 6 juillet au samedi 11 juillet 2026.</div>
-          <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
-        </div>
-      </div>
-
-      <div class="event rev d2" onclick="openAffiche('1er juillet.jpg')">
-        <div class="ev-affiche">
-          <img src="1er juillet.jpg" alt="Apéro CUMBIA GARAGE">
-          <div class="ev-affiche-zoom">🔍</div>
-        </div>
-        <div class="ev-info">
-          <div class="ev-date">Mer. 1er juillet 2026</div>
-          <div class="ev-nom">Apéro-Concert<br>Cumbia Garage</div>
-          <div class="ev-type">☀️ Apéro-Concert Cumbia ! Sortie de résidence de la chorale CUMBIA GARAGE. Un chœur 100% féminin et survolté qui défend la culture musicale latina. Venez partager un verre et vous laisser emporter par l'énergie de la cumbia ! 🍹</div>
-          <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
-        </div>
-      </div>
-
-      <div class="event rev d2" onclick="openAffiche('4 juillet.jpg')">
+    <div class="events">
+      <div class="event rev" onclick="openAffiche('4 juillet.jpg')">
         <div class="ev-affiche">
           <img src="4 juillet.jpg" alt="Dîner-Concert Nulyra & El Menor de Cuba">
           <div class="ev-affiche-zoom">🔍</div>
@@ -484,8 +395,38 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
           <a href="#contact" class="ev-res" onclick="event.stopPropagation()">Réserver</a>
         </div>
       </div>
-
     </div>
+
+    <div class="rev" style="margin-top:64px; margin-bottom: 24px;">
+      <div class="trait"></div>
+      <p class="label">Semaine d'ouverture</p>
+      <h2 class="titre">Rencontres <em>Photographiques</em></h2>
+      <p class="corps">Programmation spéciale du 6 au 12 juillet 2026.</p>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:24px; margin-top:24px;">
+         <img src="AGENDA P1.jpg" alt="Agenda 6-7 juillet" style="width:100%; border:1px solid var(--gris-clair);">
+         <img src="AGENDA P2.jpg" alt="Agenda 8 juillet" style="width:100%; border:1px solid var(--gris-clair);">
+         <img src="AGENDA P3.jpg" alt="Agenda 9 juillet" style="width:100%; border:1px solid var(--gris-clair);">
+         <img src="AGENDA P4.jpg" alt="Agenda 10-12 juillet" style="width:100%; border:1px solid var(--gris-clair);">
+      </div>
+      <a href="expo/programmation.html" class="pro-dl" style="margin-top:24px;">→ Voir la programmation complète</a>
+    </div>
+
+    <div class="rev" style="margin-top:64px; background:var(--creme); padding:40px; border:1px solid var(--gris-clair);">
+       <div style="display:flex; flex-wrap:wrap; gap:40px; align-items:center;">
+         <div style="flex:1; min-width:280px;">
+           <p class="label">Exposition · Du 14 juillet au 1er octobre</p>
+           <h2 class="titre" style="margin-bottom:16px;"><em>"Les Arlésiennes de l'Aire"</em></h2>
+           <p class="corps">Une mise en valeur de la culture et de la tradition locale à travers une série de portraits d'Arlésiennes en costume traditionnel.</p>
+           <p class="corps" style="font-size:0.85rem; color:var(--gris-f);"><em>Un projet réalisé par Jonathan Pierredon.</em></p>
+         </div>
+         <div style="width:100%; max-width:350px;">
+           <img src="arlesienne.jpeg" alt="Les Arlésiennes de l'Aire" style="width:100%; object-fit:cover; border:1px solid var(--gris-clair);">
+         </div>
+       </div>
+    </div>
+
+  </div>
+</section>
 
 <section id="pro">
   <div class="pro-hero">
@@ -552,34 +493,6 @@ footer{background:var(--encre);padding:24px 48px;display:flex;align-items:center
   <img src="" alt="" id="lbImg">
   <span class="lb-n lb-nx" id="lbN">›</span>
 </div>
-
-<section id="exposer" style="padding: 60px 0; background: #1a1a1a; color: #fff;">
-  <div class="container">
-    <div class="exposer-inner" style="display: flex; align-items: center; gap: 40px; flex-wrap: wrap;">
-      
-      <div class="exposer-txt" style="flex: 1; min-width: 300px; background: rgba(0,0,0,0.3); padding: 30px; border-radius: 10px;">
-        <div class="trait" style="background: #e63946; height: 3px; width: 50px; margin-bottom: 15px;"></div>
-        <p class="label" style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8em; color: #ccc;">Appel à projet</p>
-        <h2 class="titre" style="font-size: 2.5em; margin: 10px 0;">L'Aire Immersive:<br><em style="color: #e63946;">Votre Solo Show</em></h2>
-        <p class="corps" style="font-size: 1.1em; line-height: 1.6; color: #eee;">Votre expo sur 4 écrans de vidéoprojection dans une salle immersive dédiée.</p>
-        
-        <div class="exposer-appel" style="margin-top: 20px;">
-          <p><strong>📢 Appel à projet en cours</strong><br>Démarquez-vous en proposant une expérience révolutionnaire.</p>
-          <a href="expo/index.html" class="btn" style="display:inline-block; padding: 15px 30px; background: #e63946; color: #fff; text-decoration: none; font-weight: bold; border-radius: 5px; margin-top: 10px;">Déposer un projet ↗</a>
-        </div>
-      </div>
-
-      <div class="exposer-visuel" style="flex: 1; min-width: 300px; text-align: center;">
-        <div class="carrousel-container" style="height: 250px; border-radius: 10px; overflow: hidden; margin-bottom: 20px;">
-    <img src="expo/images/carroussel-concept/1.jpg" alt="Concept Immersif" style="width: 100%; height: 100%; object-fit: cover;">
-        </div>
-        
-        <a href="expo/programmation.html" class="btn btn-out-b" style="display:inline-block; padding: 10px 20px; border: 2px solid #fff; color: #fff; text-decoration: none; border-radius: 5px;">Voir la programmation ↗</a>
-      </div>
-      
-    </div>
-  </div>
-</section>
 
 <section id="contact">
   <div class="container">
@@ -721,3 +634,5 @@ if(items.length > 0 && lbEl) {
 </script>
 </body>
 </html>
+
+```
